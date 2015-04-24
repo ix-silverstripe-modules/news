@@ -1,0 +1,30 @@
+{
+	"name" : "silverstripe-modules/news",
+	"description" : "An extension for adding news and news article pages to a site",
+	"type" : "silverstripe-module",
+	"repositories" : [{
+			"type" : "git",
+			"url" : "https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin.git",
+			"name" : "silverstripe-modules/VersionedModelAdmin"
+		}
+	],
+	"keywords" : [
+		"silverstripe",
+		"news",
+		"articles",
+		"news articles"
+	],
+	"authors" : [{
+			"name" : "Stewart Wilson",
+			"email" : "stewart.wilson@internetrix.com.au"
+		}
+	],
+	"require" : {
+		"silverstripe/framework" : "~3.1",
+		"silverstripe-modules/VersionedModelAdmin" : "dev-master"
+	},
+	"extra" : {
+		"installer-name" : "versionedmodeladmin"
+	},
+	"minimum-stability" : "dev"
+}
