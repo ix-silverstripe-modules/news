@@ -3,7 +3,9 @@
 	<article>
 		<h1>$Title</h1>
 		<div class="content">
+			<div id="news-container">
 			<% include NewsList %>
+			</div>
 		</div>
 	</article>
 		$Form

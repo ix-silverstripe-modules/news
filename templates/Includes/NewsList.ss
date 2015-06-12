@@ -22,7 +22,7 @@
      </div>   
 <% end_loop %>
 
-<% if MoreEvents %>
+<% if MoreNews %>
 	<div class="show-more">
 		<a href="$MoreLink">Show More...</a>
     </div>
