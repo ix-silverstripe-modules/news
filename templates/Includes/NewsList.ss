@@ -27,3 +27,24 @@
 		<a href="$MoreLink">Show More...</a>
     </div>
 <% end_if %>
+
+<br />
+<% if $News.MoreThanOnePage %>
+    <% if $News.NotFirstPage %>
+        <a class="prev" href="$News.PrevLink">Prev</a>
+    <% end_if %>
+    <% loop $News.Pages %>
+        <% if $CurrentBool %>
+            $PageNum
+        <% else %>
+            <% if $Link %>
+                <a href="$Link">$PageNum</a>
+            <% else %>
+                ...
+            <% end_if %>
+        <% end_if %>
+        <% end_loop %>
+    <% if $News.NotLastPage %>
+        <a class="next" href="$News.NextLink">Next</a>
+    <% end_if %>
+<% end_if %>

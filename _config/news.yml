@@ -5,4 +5,4 @@ Name: news
 News:
   enable_sharing: true
   enable_archive: true
-  pagination_type: ajax
+  pagination_type: static

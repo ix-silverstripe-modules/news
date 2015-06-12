@@ -139,7 +139,8 @@ class NewsHolder_Controller extends Page_Controller {
 		parent::init();
 		
 		if(Config::inst()->get('News', 'pagination_type') == "ajax") {
-			Requirements::javascript("framework/thirdparty/jquery/jquery.js"); // Make sure jQuery is included first
+			Requirements::block("framework/thirdparty/jquery/jquery.js"); // block out thirdparty framework jquery
+			Requirements::javascript("news/javascript/jquery.js"); // Make sure jQuery is included first
 			Requirements::javascript("news/javascript/news.js");
 		}
 		
@@ -147,10 +148,15 @@ class NewsHolder_Controller extends Page_Controller {
 		
 	}
 	
-	public function getOffset() {
+public function getOffset() {
 		if(!isset($_REQUEST['start'])) {
 			$_REQUEST['start'] = 0;
 		}
+		
+		//Debug::show($this->getRequest());
+		
+		//Debug::show($_REQUEST['start']);
+		
 		return $_REQUEST['start'];
 	}
 	
@@ -182,7 +188,7 @@ class NewsHolder_Controller extends Page_Controller {
 			'Title' 	=> $this->year . ' News Archive',
 			'Content' 	=> '',
 			'InArchive'	=> true,
-			'NoNewsText' => $this->NoNewsText	
+			'NoNewsText' => $this->NoNewsText ? $this->NoNewsText : "Sorry, there is no news to show"
 		);
 	
 		return $this->customise($data)->renderWith(array('NewsHolder_archive', 'NewsHolder', 'Page'));
@@ -216,13 +222,19 @@ class NewsHolder_Controller extends Page_Controller {
 			$news = $news->filter('ParentID', $this->ID);
 		}
 		
-		$all_news_count 	= $news->count();
-		$list 				= $news->limit($this->PaginationLimit, $this->getOffset());	
-		$next 				= $this->getOffset() + $this->PaginationLimit;
-		$this->MoreNews 	= ($next < $all_news_count);
-		$this->MoreLink 	= HTTP::setGetVar("start", $next);
+		if(Config::inst()->get('News', 'pagination_type') == "ajax") {
+			$all_news_count 	= $news->count();
+			$list 				= $news->limit($this->PaginationLimit, $this->getOffset());	
+			$next 				= $this->getOffset() + $this->PaginationLimit;
+			$this->MoreNews 	= ($next < $all_news_count);
+			$this->MoreLink 	= HTTP::setGetVar("start", $next);
+			
+			return $list;
+		}
 		
-		return $list;
+		if(Config::inst()->get('News', 'pagination_type') == "static") {
+			return PaginatedList::create($news, $this->request)->setPageLength($this->PaginationLimit);
+		}
 	}
 	
 	public function Years() {

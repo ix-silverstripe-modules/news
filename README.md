@@ -16,8 +16,8 @@ Maintainers
 
 ## Dependencies
 
-[silverstripe-modules/VersionedModelAdmin](https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin)
-[micschk/silverstripe-excludechildren](https://github.com/micschk/silverstripe-excludechildren)
+* [silverstripe-modules/VersionedModelAdmin](https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin)
+* [micschk/silverstripe-excludechildren](https://github.com/micschk/silverstripe-excludechildren)
 
 ## Configuration
 
