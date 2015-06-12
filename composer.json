@@ -6,6 +6,10 @@
 			"type" : "git",
 			"url" : "https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin.git",
 			"name" : "silverstripe-modules/VersionedModelAdmin"
+		},{
+			"type" : "git",
+			"url" : "https://gitlab.internetrix.net/silverstripe-modules/listingsummary.git",
+			"name" : "silverstripe-modules/listingsummary"
 		}
 	],
 	"keywords" : [
@@ -22,6 +26,7 @@
 	"require" : {
 		"silverstripe/framework" : "~3.1",
 		"silverstripe-modules/VersionedModelAdmin" : "dev-master",
+		"silverstripe-modules/listingsummary" : "dev-master",
 		"micschk/silverstripe-excludechildren" : "dev-master"
 	},
 	"extra" : {

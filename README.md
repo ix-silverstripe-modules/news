@@ -1,7 +1,7 @@
-News Module
+Internetrix News Module
 =======================================
 
-An extension for adding news and news article pages to a site. Adds a NewsHolder and NewsArticle page type.
+A module for adding news and news article pages to a site. Adds a NewsHolder and NewsArticle page type.
 
 Provides two extensions for HomePage and Page to allow news articles to be displayed on the HomePage or in the sidebar of a page.
 
@@ -16,8 +16,9 @@ Maintainers
 
 ## Dependencies
 
-* [silverstripe-modules/VersionedModelAdmin](https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin)
-* [micschk/silverstripe-excludechildren](https://github.com/micschk/silverstripe-excludechildren)
+* [silverstripe-modules/VersionedModelAdmin](https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin) module
+* [silverstripe-modules/listingsummary](https://gitlab.internetrix.net/silverstripe-modules/listingsummary) module
+* [micschk/silverstripe-excludechildren](https://github.com/micschk/silverstripe-excludechildren) module
 
 ## Configuration
 
