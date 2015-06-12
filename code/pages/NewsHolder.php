@@ -67,6 +67,8 @@ class NewsHolder extends Page {
 			}
 		}
 		
+		$this->extend('IRXupdateNewsHolderChildren', $children);
+		
 		return $children;
 	}
 	
@@ -77,6 +79,7 @@ class NewsHolder extends Page {
 			$this->PaginationLimit = 20;
 		}
 	}
+	
 	public function MenuYears() {
 		$set   = new ArrayList();
 		$year  = DB::getConn()->formattedDatetimeClause('"Date"', '%Y');
@@ -261,16 +264,4 @@ public function getOffset() {
 	
 		return $set;
 	}
-	
-// 	public function Children(){
-// 		$children = $this->data()->Children();
-// 		$child = $children->first();
-// 		$child->LinkOrSection = 'section';
-// // 		foreach($children as $child){
-			
-// // 		}
-// 		return null;
-// 	}
-	
-	
 }

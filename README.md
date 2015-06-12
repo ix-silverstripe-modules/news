@@ -67,3 +67,10 @@ For Static Pagination (ie, the next / prev buttons), you must set the config as 
 	pagination_type: static
 	
 Additionally, you must include the pagination code. It is included at the end of NewsList.ss. It is safe to leave both the AJAX and Static pagination template code in as they will only work when activated.
+
+## Extensions
+
+* IRXupdateNewsHolderCMSFields
+* IRXupdateNewsHolderChildren
+* IRXupdateNewsCMSFields
+

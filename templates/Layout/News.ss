@@ -5,6 +5,7 @@ Posted: $Date.Long
 
 $Content
 
+<% if $ShareLinksEnabled %>
 <!-- share/ prev next -->                        
 <div class="social-share container">
     <div class="medium-8 columns">
@@ -35,6 +36,7 @@ $Content
         </ul>
     </div>
 </div>
+<% end_if %>
 
 <div class="news-nav container">
     <div class="medium-4 small-6 column">

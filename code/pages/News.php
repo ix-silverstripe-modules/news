@@ -169,6 +169,10 @@ class News_Controller extends Page_Controller {
 		parent::init();
 	}
 	
+	public function ShareLinksEnabled() {
+		return Config::inst()->get('News', 'enable_sharing');
+	}
+	
 	public function BackLink(){
 		$request = $this->getRequest();
 		$url 	 = false;
