@@ -32,7 +32,7 @@ class NewsHolder extends Page {
 		$fields->addFieldToTab('Root.Main', DropdownField::create('NewsSource', 'News Source', $this->dbObject('NewsSource')->enumValues()), 'ListingSummaryToggle');
 		
 		$fields->addFieldsToTab('Root.Tags', array(
-			GridField::create('NewsTag', 'News Tags', NewsTag::get(), GridFieldConfig_RecordEditor::create())
+			//GridField::create('NewsTag', 'News Tags', NewsTag::get(), GridFieldConfig_RecordEditor::create())
 		));
 		
 		$fields->addFieldsToTab('Root.Main', TextField::create('NoNewsText', 'No News Message'), 'Content');
@@ -82,11 +82,19 @@ class NewsHolder extends Page {
 		$year  = DB::getConn()->formattedDatetimeClause('"Date"', '%Y');
 	
 		$query = new SQLQuery();
-		$query->setSelect("$year tDate, \"SiteTree\".\"SubsiteID\"")->addFrom('"News"');
+		
+		// Modfiy select to add subsite in if it's installed
+		if(class_exists('Subsite')) {
+			$query->setSelect("$year tDate, \"SiteTree\".\"SubsiteID\"")->addFrom('"News"');
+		} else {
+			$query->setSelect("$year tDate")->addFrom('"News"');
+		}
 		$query->addLeftJoin("SiteTree", '"SiteTree"."ID" = "News"."ID"');
 		$query->setGroupBy('"tDate"');
 		$query->setOrderBy('"Date" DESC');
-		$query->setWhere('"SiteTree"."SubsiteID" = ' . Subsite::currentSubsiteID());
+		if(class_exists('Subsite')) {
+			$query->setWhere('"SiteTree"."SubsiteID" = ' . Subsite::currentSubsiteID());
+		}
 	
 		$years = $query->execute()->column();
 	
@@ -130,7 +138,9 @@ class NewsHolder_Controller extends Page_Controller {
 	public function init() {
 		parent::init();
 		
-		Requirements::javascript("irxnews/javascript/news.js");
+		if(Config::inst()->get('News', 'pagination_type') == "ajax") {
+			Requirements::javascript("irxnews/javascript/news.js");
+		}
 		
 		RSSFeed::linkToFeed($this->Link("rss"), "Latest News feed");
 		

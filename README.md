@@ -11,11 +11,12 @@ Maintainer Contact
 
 ## Requirements
 
-SilverStripe 3.1~
+SilverStripe 3.1.10 or above
 
 ## Dependencies
 
 [silverstripe-modules/VersionedModelAdmin](https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin.git)
+[micschk/silverstripe-excludechildren](https://github.com/micschk/silverstripe-excludechildren)
 
 ## Configuration
 
