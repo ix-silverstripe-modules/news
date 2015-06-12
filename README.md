@@ -46,3 +46,12 @@ Additionally, your news articles must be contained within a div and your more ar
     </div>
 	<% end_if %>
 
+It is safe to leave both the AJAX and Static pagination template code in as they will only work when activated.
+
+### Static Pagination Setup
+
+For Static Pagination (ie, the next / prev buttons), you must set the config as below:
+
+	pagination_type: static
+	
+Additionally, you must include the pagination code. It is included at the end of NewsList.ss. It is safe to leave both the AJAX and Static pagination template code in as they will only work when activated.
