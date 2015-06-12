@@ -73,10 +73,6 @@ class News extends Page implements HiddenClass{
 		
 		$fields->addFieldToTab('Root.Main', DropdownField::create('ParentID','News Holder?', NewsHolder::get()->map()->toArray()), 'ListingSummaryToggle');
 		
-		$ListingSummary = $fields->fieldByName("ListingSummaryToggle");
-		
-		Debug::show($ListingSummary);
-		
 		$fields->addFieldToTab("Root.Main", $date = new DateField("Date"),"ListingSummaryToggle");
 		$date->setConfig('showcalendar', true);
 		$date->setConfig('dateformat', 'dd/MM/YYYY');

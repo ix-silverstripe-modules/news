@@ -12,13 +12,20 @@ Maintainers
 ## Requirements
 
 * SilverStripe 3.1.10 or above
-* jQuery (if using Ajax Pagination)
 
 ## Dependencies
 
 * [silverstripe-modules/VersionedModelAdmin](https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin) module
 * [silverstripe-modules/listingsummary](https://gitlab.internetrix.net/silverstripe-modules/listingsummary) module
 * [micschk/silverstripe-excludechildren](https://github.com/micschk/silverstripe-excludechildren) module
+
+## Notable Features
+
+* Integrates with Listing Summary Module
+* Easily enable and disable sharing capabilities
+* Easily enable and disable archieve page
+* Two types of pagination available
+* This great README file!
 
 ## Configuration
 
@@ -28,6 +35,10 @@ You can disable certain features in the config.yml of your site.
 	  enable_sharing: true
 	  enable_archive: true
 	  pagination_type: ajax
+
+### Enable/Disable Archiving
+
+You can set whether or not achiving is enabled via the configuration file. This is pretty self explanitory. Note: The archive page will 404 when disabled.
 
 ### Ajax Pagination Setup
 
