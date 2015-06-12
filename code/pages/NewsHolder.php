@@ -44,7 +44,7 @@ class NewsHolder extends Page {
 	
 	public function Children(){
 		$children = parent::Children();
-		
+
 		// Check to see if the archive feature is enabled
 		if(Config::inst()->get('News', 'enable_archive')) {
 			$request = Controller::curr()->getRequest();
@@ -139,7 +139,7 @@ class NewsHolder_Controller extends Page_Controller {
 		parent::init();
 		
 		if(Config::inst()->get('News', 'pagination_type') == "ajax") {
-			Requirements::javascript("irxnews/javascript/news.js");
+			Requirements::javascript("news/javascript/news.js");
 		}
 		
 		RSSFeed::linkToFeed($this->Link("rss"), "Latest News feed");
@@ -162,6 +162,8 @@ class NewsHolder_Controller extends Page_Controller {
 	}
 	
 	public function archive($request){
+		if(!Config::inst()->get('News', 'enable_archive')) return $this->httpError(404);
+		
 		$year = (int) $request->param('Year');
 
 		if($year){

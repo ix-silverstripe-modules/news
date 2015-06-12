@@ -66,10 +66,10 @@ class News extends Page implements HiddenClass{
 		$fields = parent::getCMSFields();
 		
 		// If an image has not been set, open the toggle field to remind user
-		if($this->ListingImageID == 0){
-			$toggle = $fields->fieldByName('Root.Main.ListingSummaryToggle');
-			$toggle->setStartClosed(false);
-		}
+		//if($this->ListingImageID == 0){
+		//	$toggle = $fields->fieldByName('Root.Main.ListingSummaryToggle');
+		//	$toggle->setStartClosed(false);
+		//}
 		
 		$fields->addFieldToTab('Root.Main', DropdownField::create('ParentID','News Holder?', NewsHolder::get()->map()->toArray()), 'ListingSummaryToggle');
 		
