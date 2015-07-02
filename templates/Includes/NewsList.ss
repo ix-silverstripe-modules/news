@@ -23,8 +23,8 @@
 <% end_loop %>
 
 <% if MoreNews %>
-	<div class="show-more">
-		<a href="$MoreLink">Show More...</a>
+	<div>
+		<a href="$MoreLink" class="show-more">Show More...</a>
     </div>
 <% end_if %>
 
