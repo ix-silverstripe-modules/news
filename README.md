@@ -72,7 +72,7 @@ Additionally, you must include the pagination code. It is included at the end of
 
 ## Extensions
 
-**TO DO:** Write information about these extensions
+These a pretty self explanatory. 
 
 * IRXupdateNewsHolderCMSFields
 * IRXupdateNewsHolderChildren
