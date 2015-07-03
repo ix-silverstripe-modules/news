@@ -23,11 +23,12 @@ class NewsHolder extends Page {
 	private static $db = array(
 		'PaginationLimit' 	=> 'Int',
 		'NewsSource' 		=> 'enum("Children,All","Children")',
-		'NoNewsText' 		=> 'Varchar(255)'	
+		'NoNewsText' 		=> 'HTMLText'	
 	);
 	
 	private static $defaults = array(
-		'PaginationLimit' => 20
+		'PaginationLimit' => 20,
+		'NoNewsText' => '<p>Sorry! There are no news articles to display.</p>'
 	);
 	
 	private static $allowed_children = array(
@@ -46,7 +47,7 @@ class NewsHolder extends Page {
 		$fields->addFieldToTab('Root.Main', NumericField::create('PaginationLimit', 'Pagination Limit'), $putBefore);
 		$fields->addFieldToTab('Root.Main', DropdownField::create('NewsSource', 'News Source', $this->dbObject('NewsSource')->enumValues()), $putBefore);
 		
-		$fields->addFieldsToTab('Root.Main', TextField::create('NoNewsText', 'No News Message'), $configBefore);
+		$fields->addFieldsToTab('Root.Main', HtmlEditorField::create('NoNewsText', 'No News Message')->setRows(2)->addExtraClass('withmargin'), $configBefore);
 		
 		$this->extend('updateNewsHolderCMSFields', $fields);
 		
@@ -198,7 +199,7 @@ public function getOffset() {
 			'Title' 	=> $this->year . ' News Archive',
 			'Content' 	=> '',
 			'InArchive'	=> true,
-			'NoNewsText' => $this->NoNewsText ? $this->NoNewsText : "Sorry, there is no news articles to show."
+			'NoNewsText' => $this->NoNewsText ? $this->NoNewsText : "<p>Sorry! There are no news articles to display.</p>"
 		);
 	
 		return $this->customise($data)->renderWith(array('NewsHolder_archive', 'NewsHolder', 'Page'));

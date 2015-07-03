@@ -28,7 +28,6 @@ class News extends Page implements HiddenClass{
 	
 	private static $searchable_fields = array(
 			'Title' => array('filter' => 'PartialMatchFilter', 'title' => 'Title' ),
-	//		'Date' => array('filter' => 'DateRangeFilter', 'date' => 'Date' ),
 			'Author' => array('filter' => 'PartialMatchFilter', 'author' => 'Author' )
 	);
 	
@@ -37,11 +36,13 @@ class News extends Page implements HiddenClass{
 		"Status",
 		"Date",
 		"Author",
+		"Parent.Title"
 //		"ListingSummary.CMSThumbnail"
 	);
 	
 	private static $field_labels = array(
 //		"ListingSummary.CMSThumbnail" 	=> 'Image'
+		"Parent.Title"		=> "News Holder"
 	);
 	
 	public function populateDefaults(){
@@ -62,6 +63,14 @@ class News extends Page implements HiddenClass{
 			$parent = NewsHolder::get()->First();
 			if($parent){
 				$this->setField('ParentID', $parent->ID);
+			} else {
+				$newParent = new NewsHolder();
+				$newParent->Title 		= 'News';
+				$newParent->URLSegment = 'news';
+				$newParent->write();
+				$newParent->publish('Stage', 'Live');
+				
+				$this->setField('ParentID', $newParent->ID);
 			}
 		}
 		

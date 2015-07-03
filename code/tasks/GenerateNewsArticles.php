@@ -12,7 +12,7 @@ class GenerateNewsArticles extends BuildTask {
 <p>Mauris ut turpis interdum, porta enim et, tristique sem. Quisque facilisis consectetur justo, sit amet ornare sem tempor eget. Aliquam dapibus libero mauris, vel consectetur sapien volutpat ornare. Morbi ac nisi nec nisi consequat sollicitudin eget vel purus. Phasellus ut lacus posuere, consequat turpis in, pretium felis. Phasellus tellus quam, consequat in metus vel, venenatis pulvinar arcu. Praesent suscipit tortor vel justo elementum pretium. Quisque commodo porta cursus. Fusce eget vulputate erat. Mauris iaculis auctor augue, ac semper eros bibendum ac.</p>";
 		
 		// holder
-		$newsHolder = NewsHolder::get()->first();
+		$newsHolder = NewsHolder::get()->last();
 		
 		if(!$newsHolder) {
 			echo "Cannot run without news holder";
@@ -24,7 +24,7 @@ class GenerateNewsArticles extends BuildTask {
 		    $dateTimestamp = rand(1357004961,time()); // Between 1/1/2013 and now
 		    
 		    $newsArticle = new News();
-		    $newsArticle->Title = "article $x";
+		    $newsArticle->Title = "article x$x";
 		    $newsArticle->ParentID = $newsHolder->ID;
 		    $newsArticle->Author = "Generated";
 		    $newsArticle->Date = date('d/m/Y', $dateTimestamp);
