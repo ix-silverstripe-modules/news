@@ -229,26 +229,48 @@ public function getOffset() {
 		
 		$news 				= News::get();
 		
-		// Save current offset into a session, so we can easily return to this page if needed
-		Session::set('NewsOffset'.$this->ID, $this->getOffset());
+		$toreturn = "";
 		
 		if($this->NewsSource == 'Children'){
 			$news = $news->filter('ParentID', $this->ID);
 		}
 		
 		if(Config::inst()->get('News', 'pagination_type') == "ajax") {
+			$sessionOffset = Session::get('NewsOffset'.$this->ID);
+			
+			if(!empty($sessionOffset)) {
+				$offset = 0;
+				$limit = ($sessionOffset + $this->PaginationLimit);
+				Session::set('NewsOffset'.$this->ID, 0);
+			} else {
+				$offset = $this->getOffset();
+				$limit = $this->PaginationLimit;
+			}
+			
+			$debug = "Offset: $offset\nLimit: $limit\nSoff: $sessionOffset\npaglim: ".$this->PaginationLimit."\neq: ".($sessionOffset / $this->PaginationLimit);
+			
+			Debug::show($debug);
+			
 			$all_news_count 	= $news->count();
-			$list 				= $news->limit($this->PaginationLimit, $this->getOffset());	
+			$list 				= $news->limit($limit, $offset);	
 			$next 				= $this->getOffset() + $this->PaginationLimit;
 			$this->MoreNews 	= ($next < $all_news_count);
 			$this->MoreLink 	= HTTP::setGetVar("start", $next);
 			
-			return $list;
+			$toreturn = $list;
 		}
 		
 		if(Config::inst()->get('News', 'pagination_type') == "static") {
-			return PaginatedList::create($news, $this->request)->setPageLength($this->PaginationLimit);
+			$toreturn = PaginatedList::create($news, $this->request)->setPageLength($this->PaginationLimit);
 		}
+		
+		if(!Session::get('NewsReturn'.$this->ID)) {
+			Session::set('NewsOffset'.$this->ID, $this->getOffset());
+		}
+		
+		Session::set('NewsReturn'.$this->ID, false);
+		
+		return $toreturn;
 	}
 	
 	public function Years() {

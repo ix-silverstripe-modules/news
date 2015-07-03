@@ -196,6 +196,9 @@ class News_Controller extends Page_Controller {
 			$page = $this->Parent();
 			$url = $page ? $page->Link() : false;
 		}
+		
+		Session::set('NewsReturn'.$this->ParentID, true);
+		
 		return $url;
 	}
 	
