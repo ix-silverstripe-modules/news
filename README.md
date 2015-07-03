@@ -1,4 +1,4 @@
-Internetrix News Module
+News Module
 =======================================
 
 A module for adding news and news article pages to a site. Adds a NewsHolder and NewsArticle page type. Provides a page extension to allow News to show on other page types such as a HomePage.

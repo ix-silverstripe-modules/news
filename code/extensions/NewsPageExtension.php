@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * Provides an extension to other pages to show news articles
+ *
+ *
+ * @author stewart.wilson@internetrix.com.au
+ * @package news
+ *
+ **/
 class NewsPageExtension extends DataExtension {
 	
 	private static $db = array(

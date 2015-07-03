@@ -1,7 +1,13 @@
 <?php
 /**
  *
- */
+ * The News object which displays the news article
+ *
+ *
+ * @author stewart.wilson@internetrix.com.au
+ * @package news
+ *
+ **/
 class News extends Page implements HiddenClass{
 	
 	private static $icon 			= 'irxnews/images/icons/newspage';

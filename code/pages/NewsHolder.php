@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * Creates a NewsHolder page which contains each of the news articles
+ *
+ *
+ * @author stewart.wilson@internetrix.com.au
+ * @package news
+ *
+ **/
 class NewsHolder extends Page {
 	
 	private static $icon = 'irxnews/images/icons/newsholder';

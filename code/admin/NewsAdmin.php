@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * A ModelAdmin to the CMS to enable easy News Article edits
+ *
+ *
+ * @author stewart.wilson@internetrix.com.au
+ * @package news
+ *
+ **/
 class NewsAdmin extends VersionedModelAdmin {
 	
 	private static $menu_icon = 'news/images/icons/news_icon.png';

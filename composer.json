@@ -16,7 +16,8 @@
 		"silverstripe",
 		"news",
 		"articles",
-		"news articles"
+		"news articles",
+		"internetrix"
 	],
 	"authors" : [{
 			"name" : "Stewart Wilson",
