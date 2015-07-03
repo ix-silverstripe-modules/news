@@ -154,8 +154,6 @@ class NewsHolder_Controller extends Page_Controller {
 		parent::init();
 		
 		if(Config::inst()->get('News', 'pagination_type') == "ajax") {
-			Requirements::block("framework/thirdparty/jquery/jquery.js"); // block out thirdparty framework jquery
-			Requirements::javascript("news/javascript/jquery.js"); // Make sure jQuery is included first
 			Requirements::javascript("news/javascript/news.js");
 		}
 		

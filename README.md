@@ -16,6 +16,7 @@ A module for adding news and news article pages to a site. Adds a NewsHolder and
 * [silverstripe-modules/VersionedModelAdmin](https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin)
 * [silverstripe-modules/listingsummary](https://gitlab.internetrix.net/silverstripe-modules/listingsummary)
 * [micschk/silverstripe-excludechildren](https://github.com/micschk/silverstripe-excludechildren)
+* jQuery (1.1.1 or newer)
 
 ## Notable Features
 
