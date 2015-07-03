@@ -1,9 +1,7 @@
 Internetrix News Module
 =======================================
 
-A module for adding news and news article pages to a site. Adds a NewsHolder and NewsArticle page type.
-
-Provides two extensions for HomePage and Page to allow news articles to be displayed on the HomePage or in the sidebar of a page.
+A module for adding news and news article pages to a site. Adds a NewsHolder and NewsArticle page type. Provides a page extension to allow News to show on other page types such as a HomePage.
 
 Maintainers
 ------------------
@@ -24,8 +22,8 @@ Maintainers
 * Integrates with Listing Summary Module
 * Easily enable and disable sharing capabilities
 * Easily enable and disable archieve page
+* Easily enable and disable RSS
 * Two types of pagination available
-* RSS
 * This great README file!
 
 ## Configuration
@@ -77,4 +75,6 @@ These a pretty self explanatory.
 * IRXupdateNewsHolderCMSFields
 * IRXupdateNewsHolderChildren
 * IRXupdateNewsCMSFields
+
+You can apply NewsPageExtension on pages you'd like to enable showing News Articles on other pages types.
 
