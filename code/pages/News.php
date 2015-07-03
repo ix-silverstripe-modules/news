@@ -174,18 +174,14 @@ class News_Controller extends Page_Controller {
 	}
 	
 	public function BackLink(){
-		$request = $this->getRequest();
  		$url 	 = false;
-	
-		if($request->requestVar('_REDIRECT_BACK_URL')) {
-			$url = $request->requestVar('_REDIRECT_BACK_URL');
-		} else if($request->getHeader('Referer')) {
-			$url = $request->getHeader('Referer');
-			//need to check the referer isnt the same page
-			if($url == Director::absoluteURL($this->Link())){
-				$url = false;
-			}
-		}
+ 		$value = Session::get('NewsOffset'.$this->ParentID);
+ 		
+ 		if($value) {
+ 			// Get parent
+ 			$parent = $this->Parent;
+ 			$url = $parent->Link("?start=$value".'#'.$this->URLSegment);
+ 		}
 	
 		if(!$url){
 			$page = $this->Parent();

@@ -230,6 +230,9 @@ public function getOffset() {
 		
 		$news 				= News::get();
 		
+		// Save current offset into a session, so we can easily return to this page if needed
+		Session::set('NewsOffset'.$this->ID, $this->getOffset());
+		
 		if($this->NewsSource == 'Children'){
 			$news = $news->filter('ParentID', $this->ID);
 		}
