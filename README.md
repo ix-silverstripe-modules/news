@@ -72,9 +72,9 @@ Additionally, you must include the pagination code. It is included at the end of
 
 These a pretty self explanatory. 
 
-* IRXupdateNewsHolderCMSFields
-* IRXupdateNewsHolderChildren
-* IRXupdateNewsCMSFields
+* updateNewsHolderCMSFields
+* updateNewsHolderChildren
+* updateNewsCMSFields
 
 You can apply NewsPageExtension on pages you'd like to enable showing News Articles on other pages types.
 

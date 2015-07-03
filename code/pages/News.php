@@ -10,7 +10,7 @@
  **/
 class News extends Page implements HiddenClass{
 	
-	private static $icon 			= 'irxnews/images/icons/newspage';
+	private static $icon 			= 'news/images/icons/newspage';
 	private static $default_sort 	= '"Date" DESC, "Created" DESC';
 	
 	private static $db = array(
@@ -95,7 +95,7 @@ class News extends Page implements HiddenClass{
 		
 		$fields->addFieldToTab('Root.Main', TextField::create('Author','Author Name'), $putBefore);
 		
-		$this->extend('IRXupdateNewsCMSFields', $fields);
+		$this->extend('updateNewsCMSFields', $fields);
 
 		return $fields;
 	}
@@ -171,18 +171,18 @@ class News_Controller extends Page_Controller {
 	}
 	
 	public function BackLink(){
-// 		$request = $this->getRequest();
+		$request = $this->getRequest();
  		$url 	 = false;
 	
-// 		if($request->requestVar('_REDIRECT_BACK_URL')) {
-// 			$url = $request->requestVar('_REDIRECT_BACK_URL');
-// 		} else if($request->getHeader('Referer')) {
-// 			$url = $request->getHeader('Referer');
-// 			//need to check the referer isnt the same page
-// 			if($url == Director::absoluteURL($this->Link())){
-// 				$url = false;
-// 			}
-// 		}
+		if($request->requestVar('_REDIRECT_BACK_URL')) {
+			$url = $request->requestVar('_REDIRECT_BACK_URL');
+		} else if($request->getHeader('Referer')) {
+			$url = $request->getHeader('Referer');
+			//need to check the referer isnt the same page
+			if($url == Director::absoluteURL($this->Link())){
+				$url = false;
+			}
+		}
 	
 		if(!$url){
 			$page = $this->Parent();

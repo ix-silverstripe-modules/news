@@ -10,7 +10,7 @@
  **/
 class NewsHolder extends Page {
 	
-	private static $icon = 'irxnews/images/icons/newsholder';
+	private static $icon = 'news/images/icons/newsholder';
 	
 	private static $extensions = array(
 		"ExcludeChildren"
@@ -42,7 +42,7 @@ class NewsHolder extends Page {
 		
 		$fields->addFieldsToTab('Root.Main', TextField::create('NoNewsText', 'No News Message'), 'Content');
 		
-		$this->extend('IRXupdateNewsHolderCMSFields', $fields);
+		$this->extend('updateNewsHolderCMSFields', $fields);
 		
 		return $fields;
 	}
@@ -65,6 +65,8 @@ class NewsHolder extends Page {
 				'Children'		=> $this->MenuYears()
 			)));
 			
+			
+			
 			foreach($children as $c){
 				if($c->ClassName == 'News'){
 					$children->remove($c);
@@ -72,7 +74,7 @@ class NewsHolder extends Page {
 			}
 		}
 		
-		$this->extend('IRXupdateNewsHolderChildren', $children);
+		$this->extend('updateNewsHolderChildren', $children);
 		
 		return $children;
 	}
