@@ -13,9 +13,9 @@ Maintainers
 
 ## Dependencies
 
-* [silverstripe-modules/VersionedModelAdmin](https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin) module
-* [silverstripe-modules/listingsummary](https://gitlab.internetrix.net/silverstripe-modules/listingsummary) module
-* [micschk/silverstripe-excludechildren](https://github.com/micschk/silverstripe-excludechildren) module
+* [silverstripe-modules/VersionedModelAdmin](https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin)
+* [silverstripe-modules/listingsummary](https://gitlab.internetrix.net/silverstripe-modules/listingsummary)
+* [micschk/silverstripe-excludechildren](https://github.com/micschk/silverstripe-excludechildren)
 
 ## Notable Features
 
@@ -32,9 +32,9 @@ You can disable certain features in the config.yml of your site.
 
 	News:
 	  enable_sharing: true
-	  enable_archive: true
+	  enable_archive: false
 	  enable_rss: true
-	  pagination_type: ajax
+	  pagination_type: static
 
 ### Enable/Disable Archiving
 
