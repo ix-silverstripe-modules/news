@@ -36,11 +36,17 @@ class NewsHolder extends Page {
 	
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-
-		$fields->addFieldToTab('Root.Main', NumericField::create('PaginationLimit', 'Pagination Limit'), 'ListingSummaryToggle');
-		$fields->addFieldToTab('Root.Main', DropdownField::create('NewsSource', 'News Source', $this->dbObject('NewsSource')->enumValues()), 'ListingSummaryToggle');
 		
-		$fields->addFieldsToTab('Root.Main', TextField::create('NoNewsText', 'No News Message'), 'Content');
+		// Makes sure the Listing Summary Toggle is present before
+		$configBefore = Config::inst()->get('News', 'news_fields_before');
+		$configBefore = ($configBefore ? $configBefore : "Content");
+		
+		$putBefore = ($fields->fieldByName('Root.Main.ListingSummaryToggle') ? "ListingSummaryToggle" : $configBefore);
+
+		$fields->addFieldToTab('Root.Main', NumericField::create('PaginationLimit', 'Pagination Limit'), $putBefore);
+		$fields->addFieldToTab('Root.Main', DropdownField::create('NewsSource', 'News Source', $this->dbObject('NewsSource')->enumValues()), $putBefore);
+		
+		$fields->addFieldsToTab('Root.Main', TextField::create('NoNewsText', 'No News Message'), $configBefore);
 		
 		$this->extend('updateNewsHolderCMSFields', $fields);
 		
@@ -64,9 +70,7 @@ class NewsHolder extends Page {
 				'LinkOrSection'	=> $action == 'archive' ? 'section' : 'link',
 				'Children'		=> $this->MenuYears()
 			)));
-			
-			
-			
+
 			foreach($children as $c){
 				if($c->ClassName == 'News'){
 					$children->remove($c);

@@ -7,3 +7,4 @@ News:
   enable_archive: false
   enable_rss: true
   pagination_type: ajax
+  news_fields_before: 'Content'

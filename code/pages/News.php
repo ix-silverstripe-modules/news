@@ -37,11 +37,11 @@ class News extends Page implements HiddenClass{
 		"Status",
 		"Date",
 		"Author",
-		"ListingSummary.CMSThumbnail"
+//		"ListingSummary.CMSThumbnail"
 	);
 	
 	private static $field_labels = array(
-		"ListingSummary.CMSThumbnail" 	=> 'Image'
+//		"ListingSummary.CMSThumbnail" 	=> 'Image'
 	);
 	
 	public function populateDefaults(){
@@ -72,7 +72,10 @@ class News extends Page implements HiddenClass{
 		$fields = parent::getCMSFields();
 		
 		// Makes sure the Listing Summary Toggle is present before 
-		$putBefore = ($fields->fieldByName('Root.Main.ListingSummaryToggle') ? "ListingSummaryToggle" : "Content");
+		$configBefore = Config::inst()->get('News', 'news_fields_before');
+		$configBefore = ($configBefore ? $configBefore : "Content");
+		
+		$putBefore = ($fields->fieldByName('Root.Main.ListingSummaryToggle') ? "ListingSummaryToggle" : $configBefore);
 		
 		// If an image has not been set, open the toggle field to remind user
 		if(class_exists("ListingPage") && $putBefore == "ListingSummaryToggle") {
