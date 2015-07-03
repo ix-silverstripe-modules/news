@@ -25,6 +25,7 @@ Maintainers
 * Easily enable and disable sharing capabilities
 * Easily enable and disable archieve page
 * Two types of pagination available
+* RSS
 * This great README file!
 
 ## Configuration
@@ -34,6 +35,7 @@ You can disable certain features in the config.yml of your site.
 	News:
 	  enable_sharing: true
 	  enable_archive: true
+	  enable_rss: true
 	  pagination_type: ajax
 
 ### Enable/Disable Archiving

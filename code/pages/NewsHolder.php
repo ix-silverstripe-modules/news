@@ -31,10 +31,6 @@ class NewsHolder extends Page {
 		$fields->addFieldToTab('Root.Main', NumericField::create('PaginationLimit', 'Pagination Limit'), 'ListingSummaryToggle');
 		$fields->addFieldToTab('Root.Main', DropdownField::create('NewsSource', 'News Source', $this->dbObject('NewsSource')->enumValues()), 'ListingSummaryToggle');
 		
-		$fields->addFieldsToTab('Root.Tags', array(
-			//GridField::create('NewsTag', 'News Tags', NewsTag::get(), GridFieldConfig_RecordEditor::create())
-		));
-		
 		$fields->addFieldsToTab('Root.Main', TextField::create('NoNewsText', 'No News Message'), 'Content');
 		
 		$this->extend('IRXupdateNewsHolderCMSFields', $fields);
@@ -156,10 +152,6 @@ public function getOffset() {
 			$_REQUEST['start'] = 0;
 		}
 		
-		//Debug::show($this->getRequest());
-		
-		//Debug::show($_REQUEST['start']);
-		
 		return $_REQUEST['start'];
 	}
 	
@@ -191,13 +183,15 @@ public function getOffset() {
 			'Title' 	=> $this->year . ' News Archive',
 			'Content' 	=> '',
 			'InArchive'	=> true,
-			'NoNewsText' => $this->NoNewsText ? $this->NoNewsText : "Sorry, there is no news to show"
+			'NoNewsText' => $this->NoNewsText ? $this->NoNewsText : "Sorry, there is no news articles to show."
 		);
 	
 		return $this->customise($data)->renderWith(array('NewsHolder_archive', 'NewsHolder', 'Page'));
 	}
 	
 	public function rss() {
+		if(!Config::inst()->get('News', 'enable_rss')) return $this->httpError(404);
+		
 		// Creates a new RSS Feed list
 		$rss = new RSSFeed(
 				$this->News(40), 

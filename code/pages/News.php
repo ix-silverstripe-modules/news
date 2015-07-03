@@ -65,15 +65,20 @@ class News extends Page implements HiddenClass{
 		
 		$fields = parent::getCMSFields();
 		
+		// Makes sure the Listing Summary Toggle is present before 
+		$putBefore = ($fields->fieldByName('Root.Main.ListingSummaryToggle') ? "ListingSummaryToggle" : "Content");
+		
 		// If an image has not been set, open the toggle field to remind user
-		//if($this->ListingImageID == 0){
-		//	$toggle = $fields->fieldByName('Root.Main.ListingSummaryToggle');
-		//	$toggle->setStartClosed(false);
-		//}
+		if(class_exists("ListingPage") && $putBefore == "ListingSummaryToggle") {
+			if($this->ListingImageID == 0){
+				$toggle = $fields->fieldByName('Root.Main.ListingSummaryToggle');
+				$toggle->setStartClosed(false);
+			}
+		}
 		
-		$fields->addFieldToTab('Root.Main', DropdownField::create('ParentID','News Holder?', NewsHolder::get()->map()->toArray()), 'ListingSummaryToggle');
+		$fields->addFieldToTab('Root.Main', DropdownField::create('ParentID','News Holder?', NewsHolder::get()->map()->toArray()), $putBefore);
 		
-		$fields->addFieldToTab("Root.Main", $date = new DateField("Date"),"ListingSummaryToggle");
+		$fields->addFieldToTab("Root.Main", $date = new DateField("Date"), $putBefore);
 		$date->setConfig('showcalendar', true);
 		$date->setConfig('dateformat', 'dd/MM/YYYY');
 		
@@ -82,7 +87,7 @@ class News extends Page implements HiddenClass{
 			->setFolderName(Config::inst()->get('Upload', 'uploads_folder') . '/News')
 		, 'ShowListingImageOnPage');
 		
-		$fields->addFieldToTab('Root.Main', TextField::create('Author','Author Name'), 'ListingSummaryToggle');
+		$fields->addFieldToTab('Root.Main', TextField::create('Author','Author Name'), $putBefore);
 		
 		$this->extend('IRXupdateNewsCMSFields', $fields);
 
@@ -147,20 +152,6 @@ class News extends Page implements HiddenClass{
 		}
 	}
 	
-	public function TagsFilter(){
-		$tags = $this->Tags();
-		if($tags && $tags->Count()){
-			$Classes = array();
-			foreach ($tags as $tag){
-				$Classes[] = $tag->TagFilterName();
-			}
-				
-			return implode(' ', $Classes);
-		}
-	
-		return '';
-	}
-	
 }
 
 class News_Controller extends Page_Controller {
@@ -174,18 +165,18 @@ class News_Controller extends Page_Controller {
 	}
 	
 	public function BackLink(){
-		$request = $this->getRequest();
-		$url 	 = false;
+// 		$request = $this->getRequest();
+ 		$url 	 = false;
 	
-		if($request->requestVar('_REDIRECT_BACK_URL')) {
-			$url = $request->requestVar('_REDIRECT_BACK_URL');
-		} else if($request->getHeader('Referer')) {
-			$url = $request->getHeader('Referer');
-			//need to check the referer isnt the same page
-			if($url == Director::absoluteURL($this->Link())){
-				$url = false;
-			}
-		}
+// 		if($request->requestVar('_REDIRECT_BACK_URL')) {
+// 			$url = $request->requestVar('_REDIRECT_BACK_URL');
+// 		} else if($request->getHeader('Referer')) {
+// 			$url = $request->getHeader('Referer');
+// 			//need to check the referer isnt the same page
+// 			if($url == Director::absoluteURL($this->Link())){
+// 				$url = false;
+// 			}
+// 		}
 	
 		if(!$url){
 			$page = $this->Parent();
