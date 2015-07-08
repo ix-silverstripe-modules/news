@@ -227,7 +227,7 @@ public function getOffset() {
 			$this->PaginationLimit = $overridePagination;
 		}
 		
-		$news 				= News::get();
+		$news = News::get();
 		
 		$toreturn = "";
 		
@@ -238,7 +238,8 @@ public function getOffset() {
 		if(Config::inst()->get('News', 'pagination_type') == "ajax") {
 			$sessionOffset = Session::get('NewsOffset'.$this->ID);
 			
-			if(!empty($sessionOffset)) {
+			if(!empty($sessionOffset) && Session::get('NewsReturn'.$this->ID)) {
+				Debug::show("in if");
 				$offset = 0;
 				$limit = ($sessionOffset + $this->PaginationLimit);
 				Session::set('NewsOffset'.$this->ID, 0);
@@ -249,11 +250,11 @@ public function getOffset() {
 			
 			$debug = "Offset: $offset\nLimit: $limit\nSoff: $sessionOffset\npaglim: ".$this->PaginationLimit."\neq: ".($sessionOffset / $this->PaginationLimit);
 			
-			Debug::show($debug);
+			//Debug::show($debug);
 			
 			$all_news_count 	= $news->count();
 			$list 				= $news->limit($limit, $offset);	
-			$next 				= $this->getOffset() + $this->PaginationLimit;
+			$next 				= $offset + $this->PaginationLimit;
 			$this->MoreNews 	= ($next < $all_news_count);
 			$this->MoreLink 	= HTTP::setGetVar("start", $next);
 			
