@@ -55,10 +55,12 @@ Additionally, your news articles must be contained within a div and your more ar
 	</div>
 	
 	<% if MoreNews %>
-	<div class="show-more">
-		<a href="$MoreLink">Show More...</a>
+	<div>
+		<a href="$MoreLink" class="show-more">Show More...</a>
     </div>
 	<% end_if %>
+
+**Important:** Ensure you use the code as exactly shown above. The javascript code relies on the exact ID and class names as used above.
 
 It is safe to leave both the AJAX and Static pagination template code in as they will only work when activated.
 
