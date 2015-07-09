@@ -70,6 +70,11 @@ For Static Pagination (ie, the next / prev buttons), you must set the config as 
 	
 Additionally, you must include the pagination code. It is included at the end of NewsList.ss. It is safe to leave both the AJAX and Static pagination template code in as they will only work when activated.
 
+### Other config options
+
+	news_fields_before: 'Content' # If you wish to position the news fields differently, se the Field Name here
+	enable_rss: true # enable or disable the RSS page (/rss) here
+
 ## Extensions
 
 These a pretty self explanatory. 
