@@ -236,25 +236,23 @@ public function getOffset() {
 		}
 		
 		if(Config::inst()->get('News', 'pagination_type') == "ajax") {
-			$sessionOffset = Session::get('NewsOffset'.$this->ID);
+			$startVar = $this->request->getVar("start");
 			
-			if(!empty($sessionOffset) && Session::get('NewsReturn'.$this->ID)) {
-				Debug::show("in if");
-				$offset = 0;
-				$limit = ($sessionOffset + $this->PaginationLimit);
-				Session::set('NewsOffset'.$this->ID, 0);
+			if($startVar && !Director::is_ajax()) { // Only apply this when the user is returning from the article OR if they were linked here
+				$toload = ($startVar / $this->PaginationLimit); // What page are we at?
+				$limit = (($toload + 1) * $this->PaginationLimit); // Need to add 1 so we always load the first page as well (articles 0 to 5)
+				
+				$list = $news->limit($limit, 0);
+				$next = $limit;
 			} else {
 				$offset = $this->getOffset();
 				$limit = $this->PaginationLimit;
+				
+				$list = $news->limit($limit, $offset);
+				$next = $offset + $this->PaginationLimit;
 			}
 			
-			$debug = "Offset: $offset\nLimit: $limit\nSoff: $sessionOffset\npaglim: ".$this->PaginationLimit."\neq: ".($sessionOffset / $this->PaginationLimit);
-			
-			//Debug::show($debug);
-			
 			$all_news_count 	= $news->count();
-			$list 				= $news->limit($limit, $offset);	
-			$next 				= $offset + $this->PaginationLimit;
 			$this->MoreNews 	= ($next < $all_news_count);
 			$this->MoreLink 	= HTTP::setGetVar("start", $next);
 			
@@ -264,13 +262,9 @@ public function getOffset() {
 		if(Config::inst()->get('News', 'pagination_type') == "static") {
 			$toreturn = PaginatedList::create($news, $this->request)->setPageLength($this->PaginationLimit);
 		}
-		
-		if(!Session::get('NewsReturn'.$this->ID)) {
-			Session::set('NewsOffset'.$this->ID, $this->getOffset());
-		}
-		
-		Session::set('NewsReturn'.$this->ID, false);
-		
+
+		Session::set('NewsOffset'.$this->ID, $this->getOffset());
+
 		return $toreturn;
 	}
 	
