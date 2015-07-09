@@ -71,11 +71,11 @@ class NewsHolder extends Page {
 				'LinkOrSection'	=> $action == 'archive' ? 'section' : 'link',
 				'Children'		=> $this->MenuYears()
 			)));
-
-			foreach($children as $c){
-				if($c->ClassName == 'News'){
-					$children->remove($c);
-				}
+		}
+		
+		foreach($children as $c){
+			if($c->ClassName == 'News'){
+				$children->remove($c);
 			}
 		}
 		
@@ -127,6 +127,8 @@ class NewsHolder extends Page {
 				'LinkingMode'	=> ($selectedYear && ($selectedYear == $year)) ? 'current' : 'section',
 			)));
 		}
+		
+		$this->extend('updateNewsHolderMenuYears', $set);
 	
 		return $set;
 	}
@@ -227,6 +229,8 @@ public function getOffset() {
 			$this->PaginationLimit = $overridePagination;
 		}
 		
+		$paginationType = Config::inst()->get('News', 'pagination_type');
+		
 		$news = News::get();
 		
 		$toreturn = "";
@@ -235,7 +239,7 @@ public function getOffset() {
 			$news = $news->filter('ParentID', $this->ID);
 		}
 		
-		if(Config::inst()->get('News', 'pagination_type') == "ajax") {
+		if($paginationType == "ajax") {
 			$startVar = $this->request->getVar("start");
 			
 			if($startVar && !Director::is_ajax()) { // Only apply this when the user is returning from the article OR if they were linked here
@@ -257,39 +261,12 @@ public function getOffset() {
 			$this->MoreLink 	= HTTP::setGetVar("start", $next);
 			
 			$toreturn = $list;
-		}
-		
-		if(Config::inst()->get('News', 'pagination_type') == "static") {
+		} else {
 			$toreturn = PaginatedList::create($news, $this->request)->setPageLength($this->PaginationLimit);
 		}
 
 		Session::set('NewsOffset'.$this->ID, $this->getOffset());
 
 		return $toreturn;
-	}
-	
-	public function Years() {
-		$set   = new ArrayList();
-		$year  = DB::getConn()->formattedDatetimeClause('"Date"', '%Y');
-	
-		$query = new SQLQuery();
-		$query->setSelect("DISTINCT $year")->addFrom('"News"');
-		$query->setOrderBy('"Date" DESC');
-	
-		$years = $query->execute()->column();
-	
-		if (!in_array(date('Y'), $years)) {
-			array_unshift($years, date('Y'));
-		}
-	
-		foreach ($years as $year) {
-			$set->push(new ArrayData(array(
-					'Year'    => $year,
-					'Link'    => $this->Link("archive/" . $year . "/"),
-					'Current' => $year == $this->year
-			)));
-		}
-	
-		return $set;
 	}
 }

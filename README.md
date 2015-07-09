@@ -36,6 +36,7 @@ You can disable certain features in the config.yml of your site.
 	  enable_archive: false
 	  enable_rss: true
 	  pagination_type: static
+	  news_fields_before: 'Content'
 
 ### Enable/Disable Archiving
 
@@ -76,6 +77,7 @@ These a pretty self explanatory.
 * updateNewsHolderCMSFields
 * updateNewsHolderChildren
 * updateNewsCMSFields
+* updateNewsHolderMenuYears
 
 You can apply NewsPageExtension on pages you'd like to enable showing News Articles on other pages types.
 

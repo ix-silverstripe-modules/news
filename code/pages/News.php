@@ -36,12 +36,12 @@ class News extends Page implements HiddenClass{
 		"Status",
 		"Date",
 		"Author",
-		"Parent.Title"
-//		"ListingSummary.CMSThumbnail"
+		"Parent.Title",
+		"ListingSummary.CMSThumbnail"
 	);
 	
 	private static $field_labels = array(
-//		"ListingSummary.CMSThumbnail" 	=> 'Image'
+		"ListingSummary.CMSThumbnail" 	=> 'Image',
 		"Parent.Title"		=> "News Holder"
 	);
 	

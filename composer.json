@@ -27,9 +27,9 @@
 	"require" : {
 		"silverstripe/framework" : "~3.1.13",
 		"silverstripe/cms" : "~3.1.13",
-		"silverstripe-modules/VersionedModelAdmin" : "dev-master",
-		"silverstripe-modules/listingsummary" : "dev-master",
-		"micschk/silverstripe-excludechildren" : "dev-master"
+		"silverstripe-modules/VersionedModelAdmin" : "1.0.0",
+		"silverstripe-modules/listingsummary" : "1.1.0",
+		"micschk/silverstripe-excludechildren" : "1.1"
 	},
 	"extra" : {
 		"installer-name" : "news"
