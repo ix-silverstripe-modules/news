@@ -48,7 +48,7 @@ For Ajax Pagination, you must set the config as below:
 
 	pagination_type: ajax
 	
-Additionally, your news articles must be contained within a div and your more articles link/button must have a certain class
+Additionally, your news articles must be contained within a div and your more articles link/button must have a certain class. It is safe to leave both the AJAX and Static pagination template code in as they will only work when activated.
 
 	<div id="news-container">
 	<% include NewsList %>
@@ -62,7 +62,7 @@ Additionally, your news articles must be contained within a div and your more ar
 
 **Important:** Ensure you use the code as exactly shown above. The javascript code relies on the exact ID and class names as used above.
 
-It is safe to leave both the AJAX and Static pagination template code in as they will only work when activated.
+*Tip:* When the user clicks on the "Show More" button, the class "loading" is added to the button. Use this class to signify that more data is being loaded.
 
 ### Static Pagination Setup
 
