@@ -174,6 +174,7 @@ public function getOffset() {
 	public function index() {
 		if(Director::is_ajax()) {
 			$this->Ajax = true;
+			$this->response->addHeader("Vary", "Accept"); // This will enable pushState to work correctly
 			return $this->renderWith('NewsList');
 		}
 		return array();

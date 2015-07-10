@@ -17,12 +17,12 @@
 						me.remove();
 						$('#news-container').append(data);
 						fetching = false;
+						history.pushState(null, null, me.attr('href'));
 					}
 				});
 			}
 			
 		});
-
 	});
 
 })(jQuery);
