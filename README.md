@@ -25,6 +25,7 @@ A module for adding news and news article pages to a site. Adds a NewsHolder and
 * Easily enable and disable archieve page
 * Easily enable and disable RSS
 * Two types of pagination available
+* AJAX Pagination implements HTML5 push state
 * This great README file!
 
 ## Configuration
