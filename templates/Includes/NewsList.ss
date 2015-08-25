@@ -13,7 +13,7 @@
    		<div class="news-story">
         	<h1>$Title</h1>
             <h5>$Author</h5>
-            $Content.Summary
+            <% if $ListingSummary %>$ListingSummary<% else %>$Content.Summary<% end_if %>
      
         	<div class="button-more">
             	<a href="$Link">Read More &raquo;</a>

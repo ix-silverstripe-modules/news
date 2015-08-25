@@ -27,8 +27,8 @@ class News extends Page implements HiddenClass{
 	);
 	
 	private static $searchable_fields = array(
-			'Title' => array('filter' => 'PartialMatchFilter', 'title' => 'Title' ),
-			'Author' => array('filter' => 'PartialMatchFilter', 'author' => 'Author' )
+		'Title' => array('filter' => 'PartialMatchFilter', 'title' => 'Title' ),
+		'Author' => array('filter' => 'PartialMatchFilter', 'author' => 'Author' )
 	);
 	
 	private static $summary_fields = array(

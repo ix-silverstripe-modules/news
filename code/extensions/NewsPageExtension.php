@@ -24,15 +24,11 @@ class NewsPageExtension extends DataExtension {
 		$hide_sidebar = Config::inst()->get('Page', 'hide_sidebar');
 		if(!$hide_sidebar || ($hide_sidebar && !in_array(get_class($this->owner), $hide_sidebar))){
 			
-			$theme 		= $this->owner->SubsiteTheme();
-			if($theme != 'pir' && $theme != 'gph' && $theme != 'gphnowra'){
 				$fields->addFieldToTab('Root.SideBar', HeaderField::create('NewsOptions', 'News Options'), 'PageBannersHeading');
 				$fields->addFieldToTab('Root.SideBar', CheckboxField::create('ShowLatestNews', 'Show the latest news?'), 'PageBannersHeading');
 				$fields->addFieldToTab('Root.SideBar', NumericField::create('LatestNewsCount', 'How many news articles to show in the sidebar?')
-						->displayIf('ShowLatestNews')->isChecked()->end(), 'PageBannersHeading');
-			}
+					->displayIf('ShowLatestNews')->isChecked()->end(), 'PageBannersHeading');
 		}
-		
 		return $fields;
 	}
 	
