@@ -22,10 +22,6 @@ class News extends Page implements HiddenClass{
 		'ShowListingImageOnPage' => true
 	);
 	
-	private static $has_one = array(
-		'Image'		=> 'Image'
-	);
-	
 	private static $searchable_fields = array(
 		'Title' => array('filter' => 'PartialMatchFilter', 'title' => 'Title' ),
 		'Author' => array('filter' => 'PartialMatchFilter', 'author' => 'Author' )
