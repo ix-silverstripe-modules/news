@@ -4,7 +4,7 @@ Name: news
 
 News:
   enable_sharing: true
-  enable_archive: false
+  enable_archive: true
   enable_rss: true
   pagination_type: ajax
   news_fields_before: 'Content'
