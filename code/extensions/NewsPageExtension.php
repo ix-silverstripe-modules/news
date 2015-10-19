@@ -34,7 +34,7 @@ class NewsPageExtension extends DataExtension {
 	
 	public function LatestNews(){
 		$limit 	 = $this->owner->LatestNewsCount ? $this->owner->LatestNewsCount : 3;
-		return News::get()->sort('Date', 'DESC')->limit($limit);
+		return NewsPage::get()->sort('Date', 'DESC')->limit($limit);
 	}
 	
 	public function ViewAllNewsLink(){

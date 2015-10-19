@@ -17,7 +17,7 @@ class NewsHolder extends Page {
 	);
 	
 	private static $excluded_children = array(
-		'News'
+		'NewsPage'
 	);
 	
 	private static $db = array(
@@ -32,7 +32,7 @@ class NewsHolder extends Page {
 	);
 	
 	private static $allowed_children = array(
-		'News'
+		'NewsPage'
 	);
 	
 	public function getCMSFields() {
@@ -74,7 +74,7 @@ class NewsHolder extends Page {
 		}
 		
 		foreach($children as $c){
-			if($c->ClassName == 'News'){
+			if($c->ClassName == 'NewsPage'){
 				$children->remove($c);
 			}
 		}
@@ -100,11 +100,11 @@ class NewsHolder extends Page {
 		
 		// Modfiy select to add subsite in if it's installed
 		if(class_exists('Subsite')) {
-			$query->setSelect("$year tDate, \"SiteTree\".\"SubsiteID\"")->addFrom('"News"');
+			$query->setSelect("$year tDate, \"SiteTree\".\"SubsiteID\"")->addFrom('"NewsPage"');
 		} else {
-			$query->setSelect("$year tDate")->addFrom('"News"');
+			$query->setSelect("$year tDate")->addFrom('"NewsPage"');
 		}
-		$query->addLeftJoin("SiteTree", '"SiteTree"."ID" = "News"."ID"');
+		$query->addLeftJoin("SiteTree", '"SiteTree"."ID" = "NewsPage"."ID"');
 		$query->setGroupBy('"tDate"');
 		$query->setOrderBy('"Date" DESC');
 		if(class_exists('Subsite')) {
@@ -220,7 +220,7 @@ public function getOffset() {
 	}
 	
 	public function ArchiveNews(){
-		$news = News::get()->sort('"Date" DESC')->where(DB::getConn()->formattedDatetimeClause('"Date"', '%Y') . " = $this->year" );
+		$news = NewsPage::get()->sort('"Date" DESC')->where(DB::getConn()->formattedDatetimeClause('"Date"', '%Y') . " = $this->year" );
 		return GroupedList::create($news);
 	}
 	
@@ -232,7 +232,7 @@ public function getOffset() {
 		
 		$paginationType = Config::inst()->get('News', 'pagination_type');
 		
-		$news = News::get();
+		$news = NewsPage::get();
 		
 		$toreturn = "";
 		

@@ -8,7 +8,7 @@
  * @package news
  *
  **/
-class News extends Page implements HiddenClass{
+class NewsPage extends Page implements HiddenClass{
 	
 	private static $icon 			= 'news/images/icons/newspage';
 	private static $default_sort 	= '"Date" DESC, "Created" DESC';
@@ -210,7 +210,7 @@ class News_Controller extends Page_Controller {
 			return false;
 		}
 	
-		$PrevNext = News::get()
+		$PrevNext = NewsPage::get()
 			->filter(array(
 					'ParentID'		  => $this->ParentID,
 					$Direction 		  => $this->Date
