@@ -20,10 +20,11 @@ class NewsPageExtension extends DataExtension {
 		'LatestNewsCount' 	=> 4
 	);
 	
-	public function IRXupdateCMSFields(FieldList &$fields, $tab = 'Root.SideBar', $insertBefore = '') {
+	public function IRXupdateCMSFields(FieldList &$fields) {
 		$hide_sidebar = Config::inst()->get('Page', 'hide_sidebar');
 		if(!$hide_sidebar || ($hide_sidebar && !in_array(get_class($this->owner), $hide_sidebar))){
-			
+				$tab = 'Root.SideBar';
+		        $insertBefore = '';
 				$fields->addFieldToTab($tab, HeaderField::create('NewsOptions', 'News Options'), $insertBefore);
 				$fields->addFieldToTab($tab, CheckboxField::create('ShowLatestNews', 'Show the latest news items?'), $insertBefore);
 				$fields->addFieldToTab($tab, NumericField::create('LatestNewsCount', 'How many news items?')
