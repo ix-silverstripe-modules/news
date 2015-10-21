@@ -168,7 +168,7 @@ class NewsPage extends Page implements HiddenClass{
 	
 }
 
-class News_Controller extends Page_Controller {
+class NewsPage_Controller extends Page_Controller {
 	
 	public function init() {
 		parent::init();
