@@ -137,6 +137,8 @@ class NewsHolder extends Page {
 
 class NewsHolder_Controller extends Page_Controller {
 	
+	protected $start;
+	protected $searchQuery;
 	protected $year;
 	
 	public static $allowed_actions = array(
@@ -159,8 +161,12 @@ class NewsHolder_Controller extends Page_Controller {
 			Requirements::javascript("news/javascript/news.js");
 		}
 		
-		RSSFeed::linkToFeed($this->Link("rss"), "Latest News feed");
+		$request 			= $this->getRequest();
+		$getParams 			= $request->getVars();
+		$this->date 		= isset($getParams['date']) 		? $getParams['date'] 							: null;
+		$this->searchQuery 	= isset($getParams['searchQuery']) 	? Convert::raw2sql($getParams['searchQuery']) 	: null;
 		
+		RSSFeed::linkToFeed($this->Link("rss"), "Latest News feed");
 	}
 	
 public function getOffset() {
@@ -240,6 +246,20 @@ public function getOffset() {
 			$news = $news->filter('ParentID', $this->ID);
 		}
 		
+		if($this->date){
+			$startAu = str_replace('/', '-', $this->date);
+			$startAu = date('Y-m-d', strtotime($startAu));
+			$news = $news->filter(array('Date:LessThanOrEqual' => $startAu));
+		}
+		
+		if($this->searchQuery){
+			$newsTable = 'SiteTree';
+			if(Versioned::current_stage() == 'Live'){
+				$newsTable .= '_Live';
+			}
+			$news = $news->where("\"$newsTable\".\"Title\" LIKE '%" . $this->searchQuery . "%' OR \"$newsTable\".\"Content\" LIKE '%" . $this->searchQuery . "%'");
+		}
+		
 		if($paginationType == "ajax") {
 			$startVar = $this->request->getVar("start");
 			
@@ -257,17 +277,48 @@ public function getOffset() {
 				$next = $offset + $this->PaginationLimit;
 			}
 			
-			$all_news_count 	= $news->count();
-			$this->MoreNews 	= ($next < $all_news_count);
+			$this->AllNewsCount = $news->count();
+			$this->MoreNews 	= ($next < $this->AllNewsCount);
 			$this->MoreLink 	= HTTP::setGetVar("start", $next);
 			
 			$toreturn = $list;
 		} else {
+			$this->AllNewsCount = $news->count();
 			$toreturn = PaginatedList::create($news, $this->request)->setPageLength($this->PaginationLimit);
 		}
 
 		Session::set('NewsOffset'.$this->ID, $this->getOffset());
 
 		return $toreturn;
+	}
+	
+	public function DateField(){
+		$dateField = DateField::create('date', 'Date');
+		$dateField->setConfig('showcalendar', true);
+		$dateField->setConfig('dateformat', 'dd/MM/YYYY');
+		$dateField->setConfig('jQueryUI.changeMonth', true);
+	
+		if($this->date){
+			$dateField->setValue($this->date);
+		}else{
+			$dateField->setValue(date('d/m/Y'));
+		}
+		
+		$this->extend('updateDateField', $dateField);
+	
+		return $dateField;
+	}
+	
+	public function searchQueryField(){
+		$searchQuery = TextField::create('searchQuery', 'Search Query')
+			->addExtraClass('search-news');
+	
+		if($this->searchQuery){
+			$searchQuery->setValue($this->searchQuery);
+		}
+			
+		$this->extend('updateSearchQueryField', $searchQuery);
+	
+		return $searchQuery;
 	}
 }
