@@ -256,6 +256,8 @@ public function getOffset() {
 			$news = $news->where("\"$newsTable\".\"Title\" LIKE '%" . $this->searchQuery . "%' OR \"$newsTable\".\"Content\" LIKE '%" . $this->searchQuery . "%'");
 		}
 		
+		$this->extend('updateNews', $news);
+		
 		if($paginationType == "ajax") {
 			$startVar = $this->request->getVar("start");
 			
