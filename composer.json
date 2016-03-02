@@ -25,8 +25,8 @@
 		}
 	],
 	"require" : {
-		"silverstripe/framework" : "~3.1.13",
-		"silverstripe/cms" : "~3.1.13",
+		"silverstripe/framework" : ">=3.1.13",
+		"silverstripe/cms" : ">=3.1.13",
 		"silverstripe-modules/VersionedModelAdmin" : "*",
 		"silverstripe-modules/listingsummary" : "*",
 		"micschk/silverstripe-excludechildren" : "*"
