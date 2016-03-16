@@ -33,11 +33,11 @@ class NewsPage extends Page implements HiddenClass{
 		"Date",
 		"Author",
 		"Parent.Title",
-		"ListingSummary.CMSThumbnail"
+		"ListingImage.CMSThumbnail"
 	);
 	
 	private static $field_labels = array(
-		"ListingSummary.CMSThumbnail" 	=> 'Image',
+		"ListingImage.CMSThumbnail" 	=> 'Image',
 		"Parent.Title"		=> "News Holder"
 	);
 	
@@ -109,13 +109,10 @@ class NewsPage extends Page implements HiddenClass{
 	}
 	
 	public function Status(){
-		if($this->isNew()){
-			return 'New Page';
-		}elseif($this->isPublished()){
-			return 'Published';
-		}else{
-			return 'Unpublished';
-		}
+		if( $this->isNew() ) return 'New Page';
+		elseif( $this->getIsModifiedOnStage() && $this->isPublished() ) return 'Modified';
+		elseif( $this->isPublished() ) return 'Published';
+		return 'Draft';
 	}
 	
 	public function getDateMonth() {
