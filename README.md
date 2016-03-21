@@ -21,9 +21,9 @@ A module for adding news and news article pages to a site. Adds a NewsHolder and
 ## Notable Features
 
 * Integrates with Listing Summary Module
-* Easily enable and disable sharing capabilities
-* Easily enable and disable archieve page
-* Easily enable and disable RSS
+* Enable and disable sharing capabilities
+* Enable and disable archive page
+* Enable and disable RSS
 * Two types of pagination available
 * AJAX Pagination implements HTML5 push state
 * This great README file!
@@ -33,59 +33,46 @@ A module for adding news and news article pages to a site. Adds a NewsHolder and
 You can disable certain features in the config.yml of your site.
 
 	News:
-	  enable_sharing: true
-	  enable_archive: false
-	  enable_rss: true
-	  pagination_type: static
-	  news_fields_before: 'Content'
+	  enable_sharing: true # adds share links for facebook, google+, twitter, pinterest, linkedin, email.
+	  enable_archive: false # Archive at [newsholder]/archive/[year]/[optional month]
+	  enable_rss: true # RSS page at [newsholder]/rss
+	  pagination_type: static # or ajax
+	  news_fields_before: 'Content' # To position the news fields in the CMS
+	Page:
+	  hide_sidebar: true # or an array of disallowed Page types (ClassNames)
+	  extensions:
+	    - NewsPageExtension
 
-### Enable/Disable Archiving
-
-You can set whether or not achiving is enabled via the configuration file. This is pretty self explanitory. Note: The archive page will 404 when disabled.
-
-### Ajax Pagination Setup
+### Pagination types
 
 For Ajax Pagination, you must set the config as below:
 
 	pagination_type: ajax
-	
-Additionally, your news articles must be contained within a div and your more articles link/button must have a certain class. It is safe to leave both the AJAX and Static pagination template code in as they will only work when activated.
-
-	<div id="news-container">
-	<% include NewsList %>
-	</div>
-	
-	<% if MoreNews %>
-	<div>
-		<a href="$MoreLink" class="show-more">Show More...</a>
-    </div>
-	<% end_if %>
-
-**Important:** Ensure you use the code as exactly shown above. The javascript code relies on the exact ID and class names as used above.
-
-*Tip:* When the user clicks on the "Show More" button, the class "loading" is added to the button. Use this class to signify that more data is being loaded.
-
-### Static Pagination Setup
 
 For Static Pagination (ie, the next / prev buttons), you must set the config as below:
 
 	pagination_type: static
-	
-Additionally, you must include the pagination code. It is included at the end of NewsList.ss. It is safe to leave both the AJAX and Static pagination template code in as they will only work when activated.
 
-### Other config options
+Static pagination is contained in the Include file Pagination.ss and can be reused (or overridden) by any type of paginated list.
 
-	news_fields_before: 'Content' # If you wish to position the news fields differently, se the Field Name here
-	enable_rss: true # enable or disable the RSS page (/rss) here
+### Sidebar
+
+When the NewsPageExtension is applied to Page, it allows any page to list latest news items. The module adds a "sidebar" tab when editing pages in the CMS to control the list. The tab can be disabled sitewide or on specified page types. To display the news, template code would look like this:
+
+	<% if ShowLatestNews %>
+		<% loop LatestNews %>
+		...
+		<% end_if %>
+	<% end_if %> 
 
 ## Extensions
 
-These a pretty self explanatory. 
+These extension points can be used to manipulate the module. 
 
-* updateNewsHolderCMSFields
-* updateNewsHolderChildren
-* updateNewsCMSFields
-* updateNewsHolderMenuYears
+* updateNewsHolderCMSFields - extends getCMSFields() on the NewsHolders.
+* updateNewsHolderChildren - extends Children() for the list of available child pages. News pages are omitted.
+* updateNewsCMSFields - extends getCMSFields() on the NewsPages.
+* updateNewsHolderMenuYears - extends MenuYears() on the NewsHolder, to alter the Archive listing.
 
 You can apply NewsPageExtension on pages you'd like to enable showing News Articles on other pages types.
 

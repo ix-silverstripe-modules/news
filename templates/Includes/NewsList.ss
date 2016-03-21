@@ -1,19 +1,13 @@
 <% loop News %>
 	<div class="news-wrap">
-		<% if Image %>
-			<img title="$Tite" alt="$Title" src="$Image.CroppedImage(680,241).URL">
+		<% if LoadOneImage %>
+			<img title="$Tite" alt="$Title" src="$LoadOneImage(160,96).URL">
 		<% end_if %>
 		
-       	<div class="news-date">
-        	<p>$Date.format(M)</p>
-            <div id="news-day">
-            <p>$Date.format(d)</p></div>
-         </div>
-        	
    		<div class="news-story">
-        	<h1>$Title</h1>
-            <h5>$Author</h5>
-            <% if $ListingSummary %>$ListingSummary<% else %>$Content.Summary<% end_if %>
+        	<h2>$Title</h2>
+        	<time datetime="$Date">$Date.format(j F Y)</time>
+            <% if $ListingSummary %>$ListingSummary<% else %><p>$Content.Summary</p><% end_if %>
      
         	<div class="button-more">
             	<a href="$Link">Read More &raquo;</a>
@@ -29,22 +23,6 @@
 <% end_if %>
 
 <br />
-<% if $News.MoreThanOnePage %>
-    <% if $News.NotFirstPage %>
-        <a class="prev" href="$News.PrevLink">Prev</a>
-    <% end_if %>
-    <% loop $News.Pages %>
-        <% if $CurrentBool %>
-            $PageNum
-        <% else %>
-            <% if $Link %>
-                <a href="$Link">$PageNum</a>
-            <% else %>
-                ...
-            <% end_if %>
-        <% end_if %>
-        <% end_loop %>
-    <% if $News.NotLastPage %>
-        <a class="next" href="$News.NextLink">Next</a>
-    <% end_if %>
-<% end_if %>
+<% with $News %>
+    <% include Pagination %>
+<% end_with %>

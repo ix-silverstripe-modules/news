@@ -9,22 +9,22 @@
  *
  **/
 class NewsPageExtension extends DataExtension {
-	
+
 	private static $db = array(
 		'ShowLatestNews' 	=> 'Boolean',
 		'LatestNewsCount' 	=> 'Int'
 	);
-	
+
 	private static $defaults = array(
 		'ShowLatestNews' 	=> true,
 		'LatestNewsCount' 	=> 4
 	);
-	
+
 	public function IRXupdateCMSFields(FieldList &$fields) {
 		$hide_sidebar = Config::inst()->get('Page', 'hide_sidebar');
-		if(!$hide_sidebar || ($hide_sidebar && !in_array(get_class($this->owner), $hide_sidebar))){
+		if( !$hide_sidebar || (!is_bool($hide_sidebar) && !in_array(get_class($this->owner), $hide_sidebar))){
 				$tab = 'Root.SideBar';
-		        $insertBefore = '';
+				$insertBefore = '';
 				$fields->addFieldToTab($tab, HeaderField::create('NewsOptions', 'News Options'), $insertBefore);
 				$fields->addFieldToTab($tab, CheckboxField::create('ShowLatestNews', 'Show the latest news items?'), $insertBefore);
 				$fields->addFieldToTab($tab, NumericField::create('LatestNewsCount', 'How many news items?')
@@ -32,21 +32,29 @@ class NewsPageExtension extends DataExtension {
 		}
 		return $fields;
 	}
-	
+
 	public function LatestNews(){
-		$limit 	 = $this->owner->LatestNewsCount ? $this->owner->LatestNewsCount : 3;
+		$limit = $this->owner->LatestNewsCount < 0 || $this->owner->LatestNewsCount > 99 ? $this->owner->LatestNewsCount : 4;
 		return NewsPage::get()->sort('Date', 'DESC')->limit($limit);
 	}
-	
+
 	public function ViewAllNewsLink(){
-		$newsPage = NewsHolder::get()->first();
-		return $newsPage ? $newsPage->Link() : false;
+		$result = false;
+		$newsPage = NewsHolder::get();
+		if( $newsPage->Count() == 1 )
+			$result = $newsPage->first()->Link();
+		elseif( $newsPage->Count() > 1 ){
+			$list = $newsPage->filter('NewsSource','All');
+			if( $list->Count() >= 1 )
+				$result = $list->first()->Link();
+		}
+		return $result;
 	}
-	
+
 	public function onBeforeWrite(){
 		parent::onBeforeWrite();
-		
-		if(!$this->owner->LatestNewsCount){
+
+		if( $this->owner->LatestNewsCount < 0 || $this->owner->LatestNewsCount > 99 ){
 			$this->owner->LatestNewsCount = 4;
 		}
 	}

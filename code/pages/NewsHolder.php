@@ -28,7 +28,7 @@ class NewsHolder extends Page {
 	
 	private static $defaults = array(
 		'PaginationLimit' => 20,
-		'NoNewsText' => '<p>Sorry! There are no news articles to display.</p>'
+		'NoNewsText' => '<p>There aren\'t any news articles to display.</p>'
 	);
 	
 	public function getCMSFields() {
@@ -76,6 +76,11 @@ class NewsHolder extends Page {
 		}
 		
 		$this->extend('updateNewsHolderChildren', $children);
+		
+		// cms introduced requirement to check canView() on each child page, but we've injected a non-page (archive).
+		if(Config::inst()->get('News', 'enable_archive')) {
+			$children->shift();
+		}
 		
 		return $children;
 	}
@@ -136,6 +141,7 @@ class NewsHolder_Controller extends Page_Controller {
 	protected $start;
 	protected $searchQuery;
 	protected $year;
+	protected $month;
 	
 	public static $allowed_actions = array(
 		'archive',
@@ -144,18 +150,19 @@ class NewsHolder_Controller extends Page_Controller {
 	);
 	
 	public static $url_handlers = array(
-		'archive/$Year'		=> 'archive',
-		'archive'			=> 'archive',
-		'rss'				=> 'rss',
-		'' 					=> 'index'
+		'archive/$Year/$Month' => 'archive',
+		'archive/$Year' => 'archive',
+		'archive' => 'archive',
+		'rss' => 'rss',
+		'' => 'index'
 	);
 	
 	public function init() {
 		parent::init();
 		
-		if(Config::inst()->get('News', 'pagination_type') == "ajax") {
+		//if(Config::inst()->get('News', 'pagination_type') == "ajax") {
 			Requirements::javascript("news/javascript/news.js");
-		}
+		//}
 		
 		$request 			= $this->getRequest();
 		$getParams 			= $request->getVars();
@@ -165,8 +172,8 @@ class NewsHolder_Controller extends Page_Controller {
 		RSSFeed::linkToFeed($this->Link("rss"), "Latest News feed");
 	}
 	
-public function getOffset() {
-		if(!isset($_REQUEST['start'])) {
+	public function getOffset() {
+		if( !isset($_REQUEST['start']) || $_REQUEST['start'] < 0 || $_REQUEST['start'] > 999 ){
 			$_REQUEST['start'] = 0;
 		}
 		
@@ -186,9 +193,17 @@ public function getOffset() {
 		if(!Config::inst()->get('News', 'enable_archive')) return $this->httpError(404);
 		
 		$year = (int) $request->param('Year');
-
+		$this->month = 0;
+		
 		if($year){
 			$this->year = $year;
+			$month = (int) $request->param('Month');
+			if( $month ){
+				if( $month < 10 )
+					$this->month = "0".$month;
+				else
+					$this->month = "".$month;
+			}
 		}else{
 			$this->year = date('Y');
 		}
@@ -199,7 +214,7 @@ public function getOffset() {
 		$this->extracrumbs[] = $page;
 
 		$data = array(
-			'Title' 	=> $this->year . ' News Archive',
+			'Title' 	=> $this->Title . ' Archive',
 			'Content' 	=> '',
 			'InArchive'	=> true,
 			'NoNewsText' => $this->NoNewsText ? $this->NoNewsText : "<p>Sorry! There are no news articles to display.</p>"
@@ -222,7 +237,11 @@ public function getOffset() {
 	}
 	
 	public function ArchiveNews(){
-		$news = NewsPage::get()->sort('"Date" DESC')->where(DB::getConn()->formattedDatetimeClause('"Date"', '%Y') . " = $this->year" );
+		if( !$this->month )
+			$news = NewsPage::get()->sort('"Date" DESC')->where(DB::getConn()->formattedDatetimeClause('"Date"', '%Y') . " = $this->year" );
+		else
+			$news = NewsPage::get()->sort('"Date" DESC')->where(DB::getConn()->formattedDatetimeClause('"Date"', '%Y-%m') . " = '{$this->year}-{$this->month}'" );
+		
 		return GroupedList::create($news);
 	}
 	

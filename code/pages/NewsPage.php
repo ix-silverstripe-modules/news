@@ -116,7 +116,7 @@ class NewsPage extends Page implements HiddenClass{
 	}
 	
 	public function getDateMonth() {
-		return date('F', strtotime($this->Date));
+		return date('F Y', strtotime($this->Date));
 	}
 	
 	public function NewsHolderTitle(){
@@ -127,40 +127,39 @@ class NewsPage extends Page implements HiddenClass{
 		return $this->Parent()->Link();
 	}
 	
-	public function LoadOneImage($width = 900, $height = 320){
+	public function LoadOneImage($width = 700, $height = 420){
 	
-		$imageDO = $this->owner->ListingImage();
-	
-		if($imageDO && $imageDO->ID){
-			$widthImage = $imageDO->SetWidth($width);
-			return $widthImage ? $widthImage->forTemplate() : false;
-		}else if($this->owner->Content){
+		$imageDO = $this->ListingImage();
+		$useListImage = $this->ShowListingImageOnPage;
+		$imageTag = false;
+		
+		if($imageDO && $imageDO->ID && $useListImage){
+			$imageTag = $imageDO->SetRatioSize($width, $height);
+		}
+		
+		if( !$imageTag && $this->Content ){
 			$dom = new DOMDocument();
-			@$dom->loadHTML($this->owner->Content);
+			@$dom->loadHTML($this->Content);
 	
 			$imgs = $dom->getElementsByTagName("img");
-			$imageTag = false;
 	
 			foreach($imgs as $img){
 				//get image src
 				$src = $img->getAttribute('src');
-	
+				
 				if($src){
 					if(stripos($src, 'assets/') === 0 && ! file_exists(BASE_PATH . '/' . $src)){
 						continue;
 					}
 	
-					$imgTitle 	= $img->getAttribute('title');
-					$imgALT 	= $img->getAttribute('alt');
-					$imgWidth 	= $img->getAttribute('alt');
-	
-					$imageTag = "<img src=\"{$src}\" alt=\"{$imgALT}\" title=\"{$imgTitle}\"/>";
-					break;
+					$imgTag = File::find($src);
+					if( $imgTag ) 
+						break;
 				}
 			}
 	
-			return $imageTag;
 		}
+		return $imageTag;
 	}
 	
 }
@@ -169,6 +168,7 @@ class NewsPage_Controller extends Page_Controller {
 	
 	public function init() {
 		parent::init();
+		Requirements::javascript("news/javascript/news.js");
 	}
 	
 	public function ShareLinksEnabled() {
