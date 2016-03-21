@@ -3,10 +3,6 @@
  *
  * Creates a NewsHolder page which contains each of the news articles
  *
- *
- * @author stewart.wilson@internetrix.com.au
- * @package news
- *
  **/
 class NewsHolder extends Page {
 	
@@ -41,8 +37,10 @@ class NewsHolder extends Page {
 		$putBefore = ($fields->fieldByName('Root.Main.ListingSummaryToggle') ? "ListingSummaryToggle" : $configBefore);
 
 		$fields->addFieldToTab('Root.Main', NumericField::create('PaginationLimit', 'Pagination Limit'), $putBefore);
-		$fields->addFieldToTab('Root.Main', DropdownField::create('NewsSource', 'News Source', $this->dbObject('NewsSource')->enumValues()), $putBefore);
-		
+		$pages = NewsHolder::get();
+		if( $pages && $pages->count() > 1) {
+			$fields->addFieldToTab('Root.Main', DropdownField::create('NewsSource', 'News Source', $this->dbObject('NewsSource')->enumValues()), $putBefore);
+		}
 		$fields->addFieldsToTab('Root.Main', HtmlEditorField::create('NoNewsText', 'No News Message')->setRows(2)->addExtraClass('withmargin'), $configBefore);
 		
 		$this->extend('updateNewsHolderCMSFields', $fields);
@@ -53,6 +51,9 @@ class NewsHolder extends Page {
 	public function Children(){
 		$children = parent::Children();
 
+		/* 
+		* cms introduced requirement to check canView() on each child page, but we've injected a non-page (archive).
+		*
 		// Check to see if the archive feature is enabled
 		if(Config::inst()->get('News', 'enable_archive')) {
 			$request = Controller::curr()->getRequest();
@@ -68,6 +69,7 @@ class NewsHolder extends Page {
 				'Children'		=> $this->MenuYears()
 			)));
 		}
+		*/
 		
 		foreach($children as $c){
 			if($c->ClassName == 'NewsPage'){
@@ -77,10 +79,6 @@ class NewsHolder extends Page {
 		
 		$this->extend('updateNewsHolderChildren', $children);
 		
-		// cms introduced requirement to check canView() on each child page, but we've injected a non-page (archive).
-		if(Config::inst()->get('News', 'enable_archive')) {
-			$children->shift();
-		}
 		
 		return $children;
 	}
@@ -93,10 +91,11 @@ class NewsHolder extends Page {
 		}
 	}
 	
-	public function MenuYears() {
+	public function MenuYears( $useMonths = true ) {
 		$set   = new ArrayList();
 		$year  = DB::getConn()->formattedDatetimeClause('"Date"', '%Y');
-	
+		if( $useMonths ) $year  = DB::getConn()->formattedDatetimeClause('"Date"', '%Y-%m');
+		
 		$query = new SQLQuery();
 		
 		// Modfiy select to add subsite in if it's installed
@@ -114,26 +113,38 @@ class NewsHolder extends Page {
 	
 		$years = $query->execute()->column();
 	
-		if (!in_array(date('Y'), $years)) {
-			array_unshift($years, date('Y'));
-		}
+// 		if (!in_array(date('Y-m'), $years)) {
+// 			array_unshift($years, date('Y-m'));
+// 		}
 		
 		$selectedYear = Controller::curr()->getRequest()->param('ID');
 	
 		foreach ($years as $year) {
-			$set->push(new ArrayData(array(
-				'Title'    		=> $year,
-				'MenuTitle'    	=> $year,
-				'Link'    		=> $this->Link("archive/" . $year . "/"),
-				'LinkingMode'	=> ($selectedYear && ($selectedYear == $year)) ? 'current' : 'section',
-			)));
+			$theYear = substr($year, 0, 4);
+			$theMonth = substr($year, 5);
+			
+			if( $theYear == date("Y") && $useMonths ){
+				$set->push(new ArrayData(array(
+					'Title'    		=> date(" F ", mktime(0, 0, 0, $theMonth, 1, 2000)) . $theYear,
+					'MenuTitle'    	=> date(" F ", mktime(0, 0, 0, $theMonth, 1, 2000)) . $theYear,
+					'Link'    		=> $this->Link("archive/" . $theYear . "/" . $theMonth ),
+					'LinkingMode'	=> ($selectedYear && ($selectedYear == $year)) ? 'current' : 'section',
+				)));
+			} else {
+				$set->push(new ArrayData(array(
+					'Title'    		=> $theYear,
+					'MenuTitle'    	=> $theYear,
+					'Link'    		=> $this->Link("archive/" . $theYear ),
+					'LinkingMode'	=> ($selectedYear && ($selectedYear == $year)) ? 'current' : 'section',
+				)));
+			}
 		}
 		
 		$this->extend('updateNewsHolderMenuYears', $set);
 	
 		return $set;
 	}
-	
+
 }
 
 class NewsHolder_Controller extends Page_Controller {
@@ -193,12 +204,12 @@ class NewsHolder_Controller extends Page_Controller {
 		if(!Config::inst()->get('News', 'enable_archive')) return $this->httpError(404);
 		
 		$year = (int) $request->param('Year');
-		$this->month = 0;
+		$month = 0;
 		
-		if($year){
+		if( $year && is_numeric($year) && $year < 2050 && $year > 2010 ){
 			$this->year = $year;
 			$month = (int) $request->param('Month');
-			if( $month ){
+			if( $month && is_numeric($month) && $month < 12 && $month > 0 ){
 				if( $month < 10 )
 					$this->month = "0".$month;
 				else
@@ -206,20 +217,27 @@ class NewsHolder_Controller extends Page_Controller {
 			}
 		}else{
 			$this->year = date('Y');
+			$year = $this->year;
 		}
 		
 		$page = new Page();
-		$page->Title 	 	 = 'archive';
-		$page->MenuTitle 	 = 'archive';
+		$page->Title 	 	 = $this->Title . ': ' . ( $month ? date(" F ", mktime(0, 0, 0, $month, 1, 2000) ) : '' ) . $year;
+		$page->MenuTitle 	 = ( $month ? date(" F ", mktime(0, 0, 0, $month, 1, 2000) ) : '' ) . $year;
 		$this->extracrumbs[] = $page;
 
 		$data = array(
-			'Title' 	=> $this->Title . ' Archive',
+			'Title' 	=> $page->Title,
 			'Content' 	=> '',
 			'InArchive'	=> true,
-			'NoNewsText' => $this->NoNewsText ? $this->NoNewsText : "<p>Sorry! There are no news articles to display.</p>"
+			'NoNewsText' => $this->NoNewsText ? $this->NoNewsText : "<p>There aren't any news articles to display.</p>"
 		);
-	
+
+		if(Director::is_ajax()) {
+			$this->Ajax = true;
+			$this->response->addHeader("Vary", "Accept"); // This will enable pushState to work correctly
+			return $this->renderWith('NewsList');
+		}
+		
 		return $this->customise($data)->renderWith(array('NewsHolder_archive', 'NewsHolder', 'Page'));
 	}
 	
@@ -236,15 +254,14 @@ class NewsHolder_Controller extends Page_Controller {
 		return $rss->outputToBrowser();
 	}
 	
-	public function ArchiveNews(){
-		if( !$this->month )
-			$news = NewsPage::get()->sort('"Date" DESC')->where(DB::getConn()->formattedDatetimeClause('"Date"', '%Y') . " = $this->year" );
-		else
-			$news = NewsPage::get()->sort('"Date" DESC')->where(DB::getConn()->formattedDatetimeClause('"Date"', '%Y-%m') . " = '{$this->year}-{$this->month}'" );
-		
-		return GroupedList::create($news);
+	/*
+	 * Obsolete. Doesn't respect parent newsholder or pagination.
+	 * */
+	public function ArchiveNews($overridePagination = null){
+		$news = NewsPage::get()->sort('"Date" DESC')->where(DB::getConn()->formattedDatetimeClause('"Date"', '%Y') . " = $this->year" );
+ 		return GroupedList::create($news);
 	}
-	
+
 	public function News($overridePagination = null){
 		
 		if($overridePagination){
@@ -276,6 +293,11 @@ class NewsHolder_Controller extends Page_Controller {
 		}
 		
 		$this->extend('updateNews', $news);
+		
+		
+		if( $this->month ) $news = $news->where(DB::getConn()->formattedDatetimeClause('"Date"', '%Y-%m') . " = '{$this->year}-{$this->month}'" );
+		elseif( $this->year ) $news = $news->where(DB::getConn()->formattedDatetimeClause('"Date"', '%Y') . " = {$this->year}" );
+		
 		
 		if($paginationType == "ajax") {
 			$startVar = $this->request->getVar("start");
