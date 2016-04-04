@@ -43,13 +43,12 @@ class NewsPage extends Page implements HiddenClass{
 	
 	public function populateDefaults(){
 		parent::populateDefaults();
-		
 		$this->setField('Date', date('Y-m-d', strtotime('now')));
-		
-		$member = Member::currentUser();
-		$member = $member ? $member->getName() : "";
-		
-		$this->setField('Author', $member);
+		if( !Controller::curr()->hasAction("build") ){
+		    $member = Member::currentUser();
+		    $member = $member ? $member->getName() : "";
+			$this->setField('Author', $member);
+		}
 	}
 	
 	public function onBeforeWrite(){
