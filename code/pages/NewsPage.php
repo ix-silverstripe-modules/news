@@ -4,11 +4,11 @@
  * The News object which displays the news article
  *
  *
- * @author stewart.wilson@internetrix.com.au
+ * @author guy.watson@internetrix.com.au
  * @package news
  *
  **/
-class NewsPage extends Page implements HiddenClass{
+class NewsPage extends Page{
 	
 	private static $icon 			= 'news/images/icons/newspage';
 	private static $default_sort 	= '"Date" DESC, "Created" DESC';
