@@ -91,7 +91,7 @@ class NewsHolder extends Page {
 		}
 	}
 	
-	public function MenuYears( $useMonths = true ) {
+	public function MenuYears( $useMonths = true, $showingYear = null ) {
 		$set   = new ArrayList();
 		$year  = DB::getConn()->formattedDatetimeClause('"Date"', '%Y');
 		if( $useMonths ) $year  = DB::getConn()->formattedDatetimeClause('"Date"', '%Y-%m');
@@ -122,8 +122,20 @@ class NewsHolder extends Page {
 		foreach ($years as $year) {
 			$theYear = substr($year, 0, 4);
 			$theMonth = substr($year, 5);
-			
-			if( $theYear == date("Y") && $useMonths ){
+
+            $yearToCompare = $showingYear ? substr($showingYear, -4) : date("Y");
+
+			if( $theYear == $yearToCompare && $useMonths ){
+                $itemToPush = new ArrayData(array(
+                    'Title'    		=> $theYear,
+                    'MenuTitle'    	=> $theYear,
+                    'Link'    		=> $this->Link("archive/" . $theYear ),
+                    'LinkingMode'	=> ($selectedYear && ($selectedYear == $year)) ? 'current' : 'section',
+                ));
+
+                if (!$set->find('Title', $theYear))
+                    $set->push($itemToPush);
+
 				$set->push(new ArrayData(array(
 					'Title'    		=> date(" F ", mktime(0, 0, 0, $theMonth, 1, 2000)) . $theYear,
 					'MenuTitle'    	=> date(" F ", mktime(0, 0, 0, $theMonth, 1, 2000)) . $theYear,
@@ -131,12 +143,15 @@ class NewsHolder extends Page {
 					'LinkingMode'	=> ($selectedYear && ($selectedYear == $year)) ? 'current' : 'section',
 				)));
 			} else {
-				$set->push(new ArrayData(array(
-					'Title'    		=> $theYear,
-					'MenuTitle'    	=> $theYear,
-					'Link'    		=> $this->Link("archive/" . $theYear ),
-					'LinkingMode'	=> ($selectedYear && ($selectedYear == $year)) ? 'current' : 'section',
-				)));
+                $itemToPush = new ArrayData(array(
+                    'Title'    		=> $theYear,
+                    'MenuTitle'    	=> $theYear,
+                    'Link'    		=> $this->Link("archive/" . $theYear ),
+                    'LinkingMode'	=> ($selectedYear && ($selectedYear == $year)) ? 'current' : 'section',
+                ));
+
+                if (!$set->find('Title', $theYear))
+                    $set->push($itemToPush);
 			}
 		}
 		
@@ -209,7 +224,7 @@ class NewsHolder_Controller extends Page_Controller {
 		if( $year && is_numeric($year) && $year < 2050 && $year > 2010 ){
 			$this->year = $year;
 			$month = (int) $request->param('Month');
-			if( $month && is_numeric($month) && $month < 12 && $month > 0 ){
+			if( $month && is_numeric($month) && $month <= 12 && $month > 0 ){
 				if( $month < 10 )
 					$this->month = "0".$month;
 				else
