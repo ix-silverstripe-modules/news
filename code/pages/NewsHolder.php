@@ -126,16 +126,6 @@ class NewsHolder extends Page {
             $yearToCompare = $showingYear ? substr($showingYear, -4) : date("Y");
 
 			if( $theYear == $yearToCompare && $useMonths ){
-                $itemToPush = new ArrayData(array(
-                    'Title'    		=> $theYear,
-                    'MenuTitle'    	=> $theYear,
-                    'Link'    		=> $this->Link("archive/" . $theYear ),
-                    'LinkingMode'	=> ($selectedYear && ($selectedYear == $year)) ? 'current' : 'section',
-                ));
-
-                if (!$set->find('Title', $theYear))
-                    $set->push($itemToPush);
-
 				$set->push(new ArrayData(array(
 					'Title'    		=> date(" F ", mktime(0, 0, 0, $theMonth, 1, 2000)) . $theYear,
 					'MenuTitle'    	=> date(" F ", mktime(0, 0, 0, $theMonth, 1, 2000)) . $theYear,
