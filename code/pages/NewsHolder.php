@@ -8,14 +8,6 @@ class NewsHolder extends Page {
 	
 	private static $icon = 'news/images/icons/newsholder';
 	
-	private static $extensions = array(
-		"ExcludeChildren"
-	);
-	
-	private static $excluded_children = array(
-		'NewsPage'
-	);
-	
 	private static $db = array(
 		'PaginationLimit' 	=> 'Int',
 		'NewsSource' 		=> 'enum("Children,All","Children")',

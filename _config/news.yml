@@ -8,6 +8,11 @@ News:
   enable_rss: true
   pagination_type: ajax
   news_fields_before: 'Content'
+NewsHolder:
+  extensions:
+    - 'Lumberjack'
+NewsPage:
+  show_in_sitetree: false
 #Page:
 #  hide_sidebar: true
 #  extensions:

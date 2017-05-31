@@ -29,7 +29,7 @@
 		"silverstripe/cms" : "~3.1",
 		"silverstripe-modules/VersionedModelAdmin" : "*",
 		"silverstripe-modules/listingsummary" : "*",
-		"micschk/silverstripe-excludechildren" : "*"
+		"silverstripe/lumberjack" : ">=1.3.0"
 	},
 	"extra" : {
 		"installer-name" : "news"
