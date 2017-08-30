@@ -19,6 +19,10 @@ class NewsHolder extends Page {
 		'NoNewsText' => '<p>There aren\'t any news articles to display.</p>'
 	);
 	
+	private static $allowed_children = array(
+		'NewsPage'
+	);
+	
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 		
