@@ -6,6 +6,7 @@ A module for adding news and news article pages to a site. Adds a NewsHolder and
 ## Glorious Maintainers
 
 *  Stewart Wilson (<stewart.wilson@internetrix.com.au>)
+*  Guy Watson (<guy.watson@internetrix.com.au>)
 
 ## Requirements
 
