@@ -215,9 +215,8 @@ class NewsPage_Controller extends Page_Controller {
 				$Direction 		  => $this->Date
 			))
 			->exclude('ID', $this->ID)
-			->sort($Sort);
-		Debug::show($PrevNext);
-//			->first() ;
+			->sort($Sort)
+			->first();
 
 		if ($PrevNext){
 			return $PrevNext->Link();
