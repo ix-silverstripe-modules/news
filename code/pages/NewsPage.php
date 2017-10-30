@@ -197,30 +197,29 @@ class NewsPage_Controller extends Page_Controller {
 
 	public function PrevNextPage($Mode = 'next') {
 
-		if($Mode == 'next'){
-			$Direction 			= "Date:GreaterThanOrEqual";
-			$Sort 				= "Date ASC, Created ASC";
-		}
-		elseif($Mode == 'prev'){
-			$Direction			= "Date:LessThanOrEqual";
-			$Sort 				= "Date DESC, Created DESC";
-		}
-		else{
-			return false;
-		}
-
+		$myID = false;
+		
 		$PrevNext = NewsPage::get()
 			->filter(array(
 				'ParentID'		  => $this->ParentID,
-				$Direction 		  => $this->Date
 			))
-			->exclude('ID', $this->ID)
-			->sort($Sort)
-			->first();
-
-		if ($PrevNext){
-			return $PrevNext->Link();
+			->sort("Date DESC, Created DESC, ID DESC")
+			->map('ID','Date')->toArray();
+		
+		if( isset($PrevNext[$this->ID]) ){
+			$keys = array_keys($PrevNext);
+			$position = array_search($this->ID, $keys);
+			if( $Mode == 'prev' && isset($keys[$position - 1]) ){
+				$myID = $keys[$position - 1];
+			} elseif( $Mode == 'next' && isset($keys[$position + 1]) ){
+				$myID = $keys[$position + 1];
+			}
 		}
+		
+		if( $myID && $page = NewsPage::get()->ByID($myID) ){
+			return $page->Link();
+		}
+		return false;
 	}
 
 }
