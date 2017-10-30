@@ -43,7 +43,7 @@ class NewsPage extends Page{
 
 	public function populateDefaults(){
 		parent::populateDefaults();
-		$this->setField('Date', date('Y-m-d', strtotime('now')));
+		$this->setField('Date', date('Y-m-d H:i:s', strtotime('now')));
 		if( !Controller::curr()->hasAction("build") ){
 			$member = Member::currentUser();
 			$member = $member ? $member->getName() : "";
