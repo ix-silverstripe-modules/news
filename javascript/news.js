@@ -3,7 +3,7 @@
 
 		var fetching = false;
 		
-		$(document).on("click", '.show-more',function(e) {
+		$(document).on("click", 'a.show-more',function(e) {
 			e.preventDefault();
 			var me = $(this);
 			
@@ -14,10 +14,11 @@
 				$.ajax({
 					url: me.attr('href'),
 					success: function(data) {
-						me.remove();
-						$('#news-container').append(data);
 						fetching = false;
 						history.pushState(null, null, me.attr('href'));
+						if( me.parent().hasClass('show-more') ) me.parent().remove();
+						else me.remove();
+						$('#news-container').append(data);
 					}
 				});
 			}
