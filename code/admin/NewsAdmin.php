@@ -16,7 +16,7 @@ class NewsAdmin extends VersionedModelAdmin {
 	private static $menu_title  = 'News';
 	private static $url_segment = 'news';
 
-	private static $managed_models  = 'NewsPage';
+	private static $managed_models  = array('NewsPage');
 	private static $model_importers = array();
 	
 }
