@@ -27,7 +27,7 @@
 	});
 	
 	$('ul.share-buttons').on('click', 'a', function(e){
-		window.open($(this).prop('href') + '&media=' + $('img.news-image').prop('src'),'sharer','width=640,height=480');
+		window.open($(this).prop('href'),'sharer','width=640,height=480');
 		return false;
 	});
 
