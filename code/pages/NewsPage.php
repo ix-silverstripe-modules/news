@@ -8,6 +8,24 @@
  * @package news
  *
  **/
+
+namespace SilverStripe\Internetrix\News;
+
+use SilverStripe\Control\Controller;
+use SilverStripe\Security\Member;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\DatetimeField;
+use SilverStripe\Forms\TimeField;
+use SilverStripe\Forms\TextField;
+use DOMDocument;
+use SilverStripe\Assets\File;
+use SilverStripe\View\Requirements;
+use SilverStripe\Control\Session;
+use Page;
+use Page_Controller;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+
 class NewsPage extends Page{
 
 	private static $icon 			= 'news/images/icons/newspage';
@@ -96,7 +114,7 @@ class NewsPage extends Page{
 		$date->setConfig('showcalendar', true);
 		$date->setConfig('dateformat', 'dd/MM/YYYY');
 
-		$datetime->setTimeField(TimeDropdownField::create('Date[time]' , 'Time'));
+		$datetime->setTimeField(TimeField::create('Date[time]' , 'Time'));
 
 		$fields->addFieldToTab('Root.Main', UploadField::create('ListingImage', 'Listing Image')
 			->addExtraClass('withmargin')

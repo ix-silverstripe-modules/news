@@ -4,6 +4,30 @@
  * Creates a NewsHolder page which contains each of the news articles
  *
  **/
+
+namespace SilverStripe\Internetrix\News;
+
+use SilverStripe\Forms\NumericField;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\View\ArrayData;
+use SilverStripe\Control\Controller;
+use SilverStripe\View\Requirements;
+use SilverStripe\Control\RSS\RSSFeed;
+use SilverStripe\Core\Convert;
+use SilverStripe\Control\Director;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\ORM\GroupedList;
+use SilverStripe\Versioned\Versioned;
+use SilverStripe\ORM\DB;
+use SilverStripe\Control\HTTP;
+use SilverStripe\Control\Session;
+use SilverStripe\Forms\DateField;
+use SilverStripe\Forms\TextField;
+use SilverStripe\ORM\Queries\SQLSelect;
+use SilverStripe\Subsites\Model\Subsite;
+
 class NewsHolder extends Page {
 	
 	private static $icon = 'news/images/icons/newsholder';
@@ -92,7 +116,7 @@ class NewsHolder extends Page {
 		$year  = DB::getConn()->formattedDatetimeClause('"Date"', '%Y');
 		if( $useMonths ) $year  = DB::getConn()->formattedDatetimeClause('"Date"', '%Y-%m');
 		
-		$query = new SQLQuery();
+		$query = new SQLSelect();
 		
 		// Modfiy select to add subsite in if it's installed
 		if(class_exists('Subsite')) {

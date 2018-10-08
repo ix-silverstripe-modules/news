@@ -10,7 +10,7 @@ News:
   news_fields_before: 'Content'
 NewsHolder:
   extensions:
-    - 'Lumberjack'
+    - 'SilverStripe\Lumberjack\Model\Lumberjack'
 NewsPage:
   show_in_sitetree: false
 #Page:
