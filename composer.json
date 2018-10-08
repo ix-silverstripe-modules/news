@@ -36,7 +36,7 @@
 	},
     "autoload": {
       "psr-4": {
-        "Internetrix\\VersionedModelAdmin\\": "src/"
+        "Internetrix\\News\\": "src/"
       }
     },
 	"prefer-stable": true,
