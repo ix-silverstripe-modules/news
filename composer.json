@@ -19,7 +19,7 @@
 		"news articles",
 		"internetrix"
 	],
-    "license": "BSD-3-Clause",
+	"license": "BSD-3-Clause",
 	"authors" : [{
 			"name" : "Stewart Wilson",
 			"email" : "stewart.wilson@internetrix.com.au"
@@ -29,7 +29,7 @@
 		"silverstripe/framework" : "^4.0.0",
 		"silverstripe/cms" : "^4.0.0",
 		"internetrix/silverstripe-versionedmodeladmin" : "dev-master",
-		"internetrix/silverstripe-listingsummary" : "dev-master",
+		"silverstripe-modules/listingsummary" : "dev-master",
 		"silverstripe/lumberjack" : "2.0.0"
 	},
 	"extra" : {
@@ -39,11 +39,11 @@
 			"javascript"
 		]
 	},
-    "autoload": {
-      "psr-4": {
-        "Internetrix\\News\\": "src/"
-      }
-    },
+	"autoload": {
+	  "psr-4": {
+		"Internetrix\\News\\": "src/"
+	  }
+	},
 	"prefer-stable": true,
-  	"minimum-stability" : "dev"
+	"minimum-stability" : "dev"
 }
