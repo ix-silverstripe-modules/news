@@ -31,7 +31,7 @@ class NewsPage extends Page{
 	private static $default_sort 	= '"Date" DESC, "Created" DESC';
 
 	private static $db = array(
-		'Date' 				=> 'SS_Datetime',
+		'Date' 				=> 'Datetime',
 		'Author' 			=> 'Text'
 	);
 
@@ -113,7 +113,7 @@ class NewsPage extends Page{
 		$date->setConfig('showcalendar', true);
 		$date->setConfig('dateformat', 'dd/MM/YYYY');
 
-		$datetime->setTimeField(TimeField::create('Date[time]' , 'Time'));
+		$datetime->setTimeField(TimeField::create('Date' , 'Time'));
 
 		$fields->addFieldToTab('Root.Main', UploadField::create('ListingImage', 'Listing Image')
 			->addExtraClass('withmargin')
