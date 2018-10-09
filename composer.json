@@ -28,7 +28,7 @@
 	"require" : {
 		"silverstripe/framework" : "^4.0.0",
 		"silverstripe/cms" : "^4.0.0",
-		"internetrix/silverstripe-versionedmodeladmin" : "dev-master",
+		"silverstripe-modules/versionedmodeladmin" : "dev-master",
 		"silverstripe-modules/listingsummary" : "dev-master",
 		"silverstripe/lumberjack" : "2.0.0"
 	},
