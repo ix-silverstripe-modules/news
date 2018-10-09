@@ -2,11 +2,14 @@
 	"name" : "internetrix/silverstripe-news",
 	"description" : "An extension for adding news and news article pages to a site",
 	"type" : "silverstripe-vendormodule",
-	"repositories" : [{
+	"homepage": "https://gitlab.internetrix.net/silverstripe-modules/news",
+	"repositories" : [
+		{
 			"type" : "git",
 			"url" : "https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin.git",
 			"name" : "internetrix/silverstripe-versionedmodeladmin"
-		}, {
+		},
+		{
 			"type" : "git",
 			"url" : "https://gitlab.internetrix.net/silverstripe-modules/listingsummary.git",
 			"name" : "internetrix/silverstripe-listingsummary"
@@ -28,8 +31,8 @@
 	"require" : {
 		"silverstripe/framework" : "^4.0.0",
 		"silverstripe/cms" : "^4.0.0",
-		"silverstripe-modules/versionedmodeladmin" : "dev-master",
-		"silverstripe-modules/listingsummary" : "dev-master",
+		"internetrix/silverstripe-versionedmodeladmin" : "dev-master",
+		"internetrix/silverstripe-listingsummary" : "dev-master",
 		"silverstripe/lumberjack" : "2.0.0"
 	},
 	"extra" : {

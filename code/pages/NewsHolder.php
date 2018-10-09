@@ -27,7 +27,9 @@ use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\Queries\SQLSelect;
 use SilverStripe\Subsites\Model\Subsite;
-
+use SilverStripe\ORM\PaginatedList;
+use Page;
+use Page_Controller;
 
 class NewsHolder extends Page {
 	
@@ -352,7 +354,8 @@ class NewsHolder_Controller extends Page_Controller {
 			$toreturn = PaginatedList::create($news, $this->request)->setPageLength($this->PaginationLimit);
 		}
 
-		Session::set('NewsOffset'.$this->ID, $this->getOffset());
+		$session = $this->getRequest()->getSession();
+		$session->set('NewsOffset'.$this->ID, $this->getOffset());
 
 		return $toreturn;
 	}
