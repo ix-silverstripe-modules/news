@@ -9,7 +9,7 @@
  *
  **/
 
-namespace SilverStripe\Internetrix\News;
+namespace Internetrix\News;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Security\Member;
@@ -21,7 +21,6 @@ use SilverStripe\Forms\TextField;
 use DOMDocument;
 use SilverStripe\Assets\File;
 use SilverStripe\View\Requirements;
-use SilverStripe\Control\Session;
 use Page;
 use Page_Controller;
 use SilverStripe\AssetAdmin\Forms\UploadField;
@@ -197,7 +196,9 @@ class NewsPage_Controller extends Page_Controller {
 
 	public function BackLink(){
 		$url 	 = false;
-		$value = Session::get('NewsOffset'.$this->ParentID);
+		//$value = Session::get('NewsOffset'.$this->ParentID);
+        $session = $this->getRequest()->getSession();
+        $value = $session->get('NewsOffset'.$this->ParentID);
 
 		if($value) {
 			// Get parent

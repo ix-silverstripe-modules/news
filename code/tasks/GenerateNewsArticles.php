@@ -1,6 +1,6 @@
 <?php
 
-namespace SilverStripe\Internetrix\News;
+namespace Internetrix\News;
 
 use SilverStripe\Dev\BuildTask;
 

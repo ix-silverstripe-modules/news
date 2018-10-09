@@ -9,7 +9,7 @@
  *
  **/
 
-namespace SilverStripe\Internetrix\News;
+namespace Internetrix\News;
 
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms\FieldList;

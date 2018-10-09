@@ -5,7 +5,7 @@
  *
  **/
 
-namespace SilverStripe\Internetrix\News;
+namespace Internetrix\News;
 
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\DropdownField;
@@ -27,6 +27,7 @@ use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\Queries\SQLSelect;
 use SilverStripe\Subsites\Model\Subsite;
+
 
 class NewsHolder extends Page {
 	
