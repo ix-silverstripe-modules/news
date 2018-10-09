@@ -8,6 +8,16 @@
  * @package news
  *
  **/
+
+namespace Internetrix\News;
+
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\HeaderField;
+use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\NumericField;
+use SilverStripe\Core\Config\Config;
+
 class NewsPageExtension extends DataExtension {
 
 	private static $db = array(

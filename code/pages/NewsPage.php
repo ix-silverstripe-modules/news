@@ -8,13 +8,30 @@
  * @package news
  *
  **/
+
+namespace Internetrix\News;
+
+use SilverStripe\Control\Controller;
+use SilverStripe\Security\Member;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\DatetimeField;
+use SilverStripe\Forms\TimeField;
+use SilverStripe\Forms\TextField;
+use DOMDocument;
+use SilverStripe\Assets\File;
+use SilverStripe\View\Requirements;
+use Page;
+use Page_Controller;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+
 class NewsPage extends Page{
 
 	private static $icon 			= 'news/images/icons/newspage';
 	private static $default_sort 	= '"Date" DESC, "Created" DESC';
 
 	private static $db = array(
-		'Date' 				=> 'SS_Datetime',
+		'Date' 				=> 'Datetime',
 		'Author' 			=> 'Text'
 	);
 
@@ -96,7 +113,7 @@ class NewsPage extends Page{
 		$date->setConfig('showcalendar', true);
 		$date->setConfig('dateformat', 'dd/MM/YYYY');
 
-		$datetime->setTimeField(TimeDropdownField::create('Date[time]' , 'Time'));
+		$datetime->setTimeField(TimeField::create('Date' , 'Time'));
 
 		$fields->addFieldToTab('Root.Main', UploadField::create('ListingImage', 'Listing Image')
 			->addExtraClass('withmargin')
@@ -179,7 +196,9 @@ class NewsPage_Controller extends Page_Controller {
 
 	public function BackLink(){
 		$url 	 = false;
-		$value = Session::get('NewsOffset'.$this->ParentID);
+		//$value = Session::get('NewsOffset'.$this->ParentID);
+        $session = $this->getRequest()->getSession();
+        $value = $session->get('NewsOffset'.$this->ParentID);
 
 		if($value) {
 			// Get parent

@@ -10,7 +10,7 @@ A module for adding news and news article pages to a site. Adds a NewsHolder and
 
 ## Requirements
 
-* SilverStripe 3.1.13 or above
+* SilverStripe 4.0 or above
 
 ## Dependencies
 

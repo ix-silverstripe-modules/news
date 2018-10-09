@@ -8,6 +8,11 @@
  * @package news
  *
  **/
+
+namespace SilverStripe\Internetrix\News;
+
+use SilverStripe\Internetrix\VersionedModelAdmin\VersionedModelAdmin;
+
 class NewsAdmin extends VersionedModelAdmin {
 	
 	private static $menu_icon = 'news/images/icons/news_icon.png';

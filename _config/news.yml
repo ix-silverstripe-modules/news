@@ -2,16 +2,16 @@
 Name: news
 ---
 
-News:
+Internetrix\News:
   enable_sharing: true
   enable_archive: true
   enable_rss: true
   pagination_type: ajax
   news_fields_before: 'Content'
-NewsHolder:
+Internetrix\News\NewsHolder:
   extensions:
-    - 'Lumberjack'
-NewsPage:
+    - 'SilverStripe\Lumberjack\Model\Lumberjack'
+Internetrix\News\NewsPage:
   show_in_sitetree: false
 #Page:
 #  hide_sidebar: true

@@ -1,4 +1,9 @@
 <?php
+
+namespace Internetrix\News;
+
+use SilverStripe\Dev\BuildTask;
+
 class GenerateNewsArticles extends BuildTask {
 
 	protected $title = 'Generate Dummy News Articles';

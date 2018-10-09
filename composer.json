@@ -1,15 +1,18 @@
 {
-	"name" : "silverstripe-modules/news",
+	"name" : "internetrix/silverstripe-news",
 	"description" : "An extension for adding news and news article pages to a site",
-	"type" : "silverstripe-module",
-	"repositories" : [{
+	"type" : "silverstripe-vendormodule",
+	"homepage": "https://gitlab.internetrix.net/silverstripe-modules/news",
+	"repositories" : [
+		{
 			"type" : "git",
 			"url" : "https://gitlab.internetrix.net/silverstripe-modules/versionedmodeladmin.git",
-			"name" : "silverstripe-modules/VersionedModelAdmin"
-		}, {
+			"name" : "internetrix/silverstripe-versionedmodeladmin"
+		},
+		{
 			"type" : "git",
 			"url" : "https://gitlab.internetrix.net/silverstripe-modules/listingsummary.git",
-			"name" : "silverstripe-modules/listingsummary"
+			"name" : "internetrix/silverstripe-listingsummary"
 		}
 	],
 	"keywords" : [
@@ -19,20 +22,31 @@
 		"news articles",
 		"internetrix"
 	],
+	"license": "BSD-3-Clause",
 	"authors" : [{
 			"name" : "Stewart Wilson",
 			"email" : "stewart.wilson@internetrix.com.au"
 		}
 	],
 	"require" : {
-		"silverstripe/framework" : "~3.1",
-		"silverstripe/cms" : "~3.1",
-		"silverstripe-modules/VersionedModelAdmin" : "*",
-		"silverstripe-modules/listingsummary" : "*",
-		"silverstripe/lumberjack" : ">=1.3.0"
+		"silverstripe/framework" : "^4.0.0",
+		"silverstripe/cms" : "^4.0.0",
+		"internetrix/silverstripe-versionedmodeladmin" : "dev-master",
+		"internetrix/silverstripe-listingsummary" : "dev-master",
+		"silverstripe/lumberjack" : "2.0.0"
 	},
 	"extra" : {
-		"installer-name" : "news"
+		"installer-name" : "news",
+		"expose": [
+			"images/icons",
+			"javascript"
+		]
 	},
+	"autoload": {
+	  "psr-4": {
+		"Internetrix\\News\\": "src/"
+	  }
+	},
+	"prefer-stable": true,
 	"minimum-stability" : "dev"
 }
