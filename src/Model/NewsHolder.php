@@ -5,7 +5,7 @@
  *
  **/
 
-namespace Internetrix\News;
+namespace Internetrix\News\Model;
 
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\DropdownField;

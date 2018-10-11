@@ -9,7 +9,7 @@
  *
  **/
 
-namespace Internetrix\News;
+namespace Internetrix\News\Model;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Security\Member;
