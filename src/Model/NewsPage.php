@@ -108,12 +108,8 @@ class NewsPage extends Page{
 
 		$fields->addFieldToTab('Root.Main', DropdownField::create('ParentID','News Holder?', NewsHolder::get()->map()->toArray()), $putBefore);
 
-		$fields->addFieldToTab("Root.Main", $datetime = new DatetimeField("Date"), $putBefore);
-		$date = $datetime->getDateField();
-		$date->setConfig('showcalendar', true);
-		$date->setConfig('dateformat', 'dd/MM/YYYY');
-
-		$datetime->setTimeField(TimeField::create('Date' , 'Time'));
+		$fields->addFieldToTab("Root.Main", $date = new DateField("Date"), $putBefore);
+		$date->setDateFormat('dd/MM/YYYY');
 
 		$fields->addFieldToTab('Root.Main', UploadField::create('ListingImage', 'Listing Image')
 			->addExtraClass('withmargin')
