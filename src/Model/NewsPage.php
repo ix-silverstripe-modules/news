@@ -135,7 +135,8 @@ class NewsPage extends Page{
 
 	public function Status(){
 		if( $this->isNew() ) return 'New Page';
-		elseif( $this->getIsModifiedOnStage() && $this->isPublished() ) return 'Modified';
+		// getIsModifiedOnStage has been deprecated, need replacement to compare differences
+		//elseif( $this->getIsModifiedOnStage() && $this->isPublished() ) return 'Modified';
 		elseif( $this->isPublished() ) return 'Published';
 		return 'Draft';
 	}
