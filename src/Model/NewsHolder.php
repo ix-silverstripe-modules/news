@@ -200,7 +200,7 @@ class NewsHolder_Controller extends PageController {
 		parent::init();
 		
 		//if(Config::inst()->get('News', 'pagination_type') == "ajax") {
-			Requirements::javascript("vendor/internetrix/silverstripe-news/javascript/news.js");
+			Requirements::javascript("vendor/internetrix/silverstripe-news/client/javascript/news.js");
 		//}
 		
 		$request 			= $this->getRequest();
