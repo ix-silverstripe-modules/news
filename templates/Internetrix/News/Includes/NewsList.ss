@@ -24,5 +24,5 @@
 
 <br />
 <% with $News %>
-    <% include Pagination %>
+    <% include Internetrix\\News\\Pagination %>
 <% end_with %>

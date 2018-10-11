@@ -12,7 +12,7 @@ $Content
         <h3>Share This Post</h3>
     </div>    
     <div class="medium-4 columns">
-        <% include Sharing %>
+        <% include Internetrix\\News\\Sharing %>
     </div>
 </div>
 <% end_if %>
