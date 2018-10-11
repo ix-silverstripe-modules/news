@@ -182,13 +182,13 @@ class NewsHolder_Controller extends PageController {
 	protected $year;
 	protected $month;
 	
-	public static $allowed_actions = array(
+	private static $allowed_actions = array(
 		'archive',
 		'rss',
 		'index'
 	);
 	
-	public static $url_handlers = array(
+	private static $url_handlers = array(
 		'archive/$Year/$Month' => 'archive',
 		'archive/$Year' => 'archive',
 		'archive' => 'archive',
