@@ -12,6 +12,7 @@
 namespace Internetrix\News;
 
 use Internetrix\VersionedModelAdmin\VersionedModelAdmin;
+use Internetrix\News\NewsPage;
 
 class NewsAdmin extends VersionedModelAdmin {
 	
