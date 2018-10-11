@@ -33,7 +33,7 @@ use PageController;
 
 class NewsHolder extends Page {
 	
-	private static $icon = 'vendor/internetrix/silverstripe-news/images/icons/newsholder';
+	private static $icon = 'internetrix/silverstripe-news:client/images/icons/newsholder-file.gif';
 	
 	private static $db = [
 		'PaginationLimit' 	=> 'Int',

@@ -27,7 +27,7 @@ use SilverStripe\AssetAdmin\Forms\UploadField;
 
 class NewsPage extends Page{
 
-	private static $icon 			= 'internetrix/silverstripe-news:client/images/icons/newspage.png';
+	private static $icon 			= 'internetrix/silverstripe-news:client/images/icons/newspage-file.gif';
 	private static $default_sort 	= '"Date" DESC, "Created" DESC';
 
 	private static $db = [
