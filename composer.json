@@ -38,8 +38,7 @@
 	"extra" : {
 		"installer-name" : "news",
 		"expose": [
-			"images/icons",
-			"javascript"
+			"client"
 		]
 	},
 	"autoload": {
