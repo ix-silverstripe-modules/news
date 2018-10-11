@@ -23,7 +23,7 @@ class NewsAdmin extends VersionedModelAdmin {
 	private static $url_segment = 'news';
 
 	private static $managed_models  = [
-	    'NewsPage' => NewsPage::class
+	    'NewsPage'
     ];
 
 	private static $model_importers = [];
