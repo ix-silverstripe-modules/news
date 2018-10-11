@@ -187,7 +187,7 @@ class NewsPage_Controller extends PageController {
 
 	public function init() {
 		parent::init();
-		Requirements::javascript("news/javascript/news.js");
+		Requirements::javascript("vendor/internetrix/silverstripe-news/javascript/news.js");
 	}
 
 	public function ShareLinksEnabled() {
