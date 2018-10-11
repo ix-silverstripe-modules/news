@@ -12,7 +12,6 @@
 namespace Internetrix\News;
 
 use Internetrix\VersionedModelAdmin\VersionedModelAdmin;
-use Internetrix\News\NewsPage;
 
 class NewsAdmin extends VersionedModelAdmin {
 	
@@ -23,7 +22,7 @@ class NewsAdmin extends VersionedModelAdmin {
 	private static $url_segment = 'news';
 
 	private static $managed_models  = [
-	    'NewsPage' => NewsPage::class
+	    'NewsPage' => \Internetrix\News\NewsPage::class
     ];
 
 	private static $model_importers = [];

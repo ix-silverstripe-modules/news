@@ -41,8 +41,16 @@ class NewsPage extends Page{
 	];
 
 	private static $searchable_fields = [
-		'Title' => array('filter' => 'PartialMatchFilter', 'title' => 'Title' ),
-		'Author' => array('filter' => 'PartialMatchFilter', 'author' => 'Author' )
+		'Title' => [
+		    'filter'    => 'PartialMatchFilter',
+            'title'     => 'Title',
+            'field'     => TextField::class
+        ],
+		'Author' => [
+		    'filter'    => 'PartialMatchFilter',
+            'title'     => 'Author',
+            'field'     => TextField::class
+        ]
 	];
 
 	private static $summary_fields = [
