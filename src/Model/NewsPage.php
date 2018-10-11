@@ -24,6 +24,7 @@ use SilverStripe\View\Requirements;
 use Page;
 use PageController;
 use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\Forms\DateField;
 
 class NewsPage extends Page{
 
