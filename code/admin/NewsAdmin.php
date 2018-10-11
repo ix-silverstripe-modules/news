@@ -9,9 +9,9 @@
  *
  **/
 
-namespace SilverStripe\Internetrix\News;
+namespace Internetrix\News;
 
-use SilverStripe\Internetrix\VersionedModelAdmin\VersionedModelAdmin;
+use Internetrix\VersionedModelAdmin\VersionedModelAdmin;
 
 class NewsAdmin extends VersionedModelAdmin {
 	
