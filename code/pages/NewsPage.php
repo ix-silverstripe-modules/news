@@ -22,7 +22,7 @@ use DOMDocument;
 use SilverStripe\Assets\File;
 use SilverStripe\View\Requirements;
 use Page;
-use Page_Controller;
+use PageController;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 
 class NewsPage extends Page{
@@ -183,7 +183,7 @@ class NewsPage extends Page{
 
 }
 
-class NewsPage_Controller extends Page_Controller {
+class NewsPage_Controller extends PageController {
 
 	public function init() {
 		parent::init();
