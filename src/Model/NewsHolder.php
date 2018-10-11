@@ -47,7 +47,7 @@ class NewsHolder extends Page {
 	];
 	
 	private static $allowed_children = [
-		'NewsPage'
+		'NewsPage' => NewsPage::class
 	];
 	
 	public function getCMSFields() {
