@@ -33,22 +33,22 @@ use PageController;
 
 class NewsHolder extends Page {
 	
-	private static $icon = 'news/images/icons/newsholder';
+	private static $icon = 'vendor/internetrix/silverstripe-news/images/icons/newsholder';
 	
-	private static $db = array(
+	private static $db = [
 		'PaginationLimit' 	=> 'Int',
 		'NewsSource' 		=> 'Enum("Children,All","Children")',
 		'NoNewsText' 		=> 'HTMLText'	
-	);
+	];
 	
-	private static $defaults = array(
+	private static $defaults = [
 		'PaginationLimit' => 20,
 		'NoNewsText' => '<p>There aren\'t any news articles to display.</p>'
-	);
+	];
 	
-	private static $allowed_children = array(
+	private static $allowed_children = [
 		'NewsPage'
-	);
+	];
 	
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
@@ -182,19 +182,19 @@ class NewsHolder_Controller extends PageController {
 	protected $year;
 	protected $month;
 	
-	private static $allowed_actions = array(
+	private static $allowed_actions = [
 		'archive',
 		'rss',
 		'index'
-	);
+	];
 	
-	private static $url_handlers = array(
+	private static $url_handlers = [
 		'archive/$Year/$Month' => 'archive',
 		'archive/$Year' => 'archive',
 		'archive' => 'archive',
 		'rss' => 'rss',
 		'' => 'index'
-	);
+	];
 	
 	public function init() {
 		parent::init();

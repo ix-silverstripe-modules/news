@@ -15,14 +15,17 @@ use Internetrix\VersionedModelAdmin\VersionedModelAdmin;
 
 class NewsAdmin extends VersionedModelAdmin {
 	
-	private static $menu_icon = 'news/images/icons/news_icon.png';
+	private static $menu_icon = 'vendor/internetrix/silverstripe-news/images/icons/news_icon.png';
 	
 	private static $title       = 'News';
 	private static $menu_title  = 'News';
 	private static $url_segment = 'news';
 
-	private static $managed_models  = array('NewsPage');
-	private static $model_importers = array();
+	private static $managed_models  = [
+	    'NewsPage' => NewsPage::class
+    ];
+
+	private static $model_importers = [];
 	
 }
 

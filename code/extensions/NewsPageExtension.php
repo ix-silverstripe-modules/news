@@ -20,15 +20,15 @@ use SilverStripe\Core\Config\Config;
 
 class NewsPageExtension extends DataExtension {
 
-	private static $db = array(
+	private static $db = [
 		'ShowLatestNews' 	=> 'Boolean',
 		'LatestNewsCount' 	=> 'Int'
-	);
+	];
 
-	private static $defaults = array(
+	private static $defaults = [
 		'ShowLatestNews' 	=> true,
 		'LatestNewsCount' 	=> 4
-	);
+	];
 
 	public function IRXupdateCMSFields(FieldList &$fields) {
 		$hide_sidebar = Config::inst()->get('Page', 'hide_sidebar');

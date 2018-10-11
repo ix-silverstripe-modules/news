@@ -27,36 +27,36 @@ use SilverStripe\AssetAdmin\Forms\UploadField;
 
 class NewsPage extends Page{
 
-	private static $icon 			= 'news/images/icons/newspage';
+	private static $icon 			= 'vendor/internetrix/silverstripe-news/images/icons/newspage';
 	private static $default_sort 	= '"Date" DESC, "Created" DESC';
 
-	private static $db = array(
+	private static $db = [
 		'Date' 				=> 'Datetime',
 		'Author' 			=> 'Text'
-	);
+	];
 
-	private static $defaults = array(
+	private static $defaults = [
 		'ShowListingImageOnPage' => true
-	);
+	];
 
-	private static $searchable_fields = array(
+	private static $searchable_fields = [
 		'Title' => array('filter' => 'PartialMatchFilter', 'title' => 'Title' ),
 		'Author' => array('filter' => 'PartialMatchFilter', 'author' => 'Author' )
-	);
+	];
 
-	private static $summary_fields = array(
+	private static $summary_fields = [
 		"Title",
 		"Status",
 		"Date",
 		"Author",
 		"Parent.Title",
 		"ListingImage.CMSThumbnail"
-	);
+	];
 
-	private static $field_labels = array(
+	private static $field_labels = [
 		"ListingImage.CMSThumbnail" 	=> 'Image',
 		"Parent.Title"		=> "News Holder"
-	);
+	];
 
 	public function populateDefaults(){
 		parent::populateDefaults();
