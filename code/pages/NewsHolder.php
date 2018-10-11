@@ -37,7 +37,7 @@ class NewsHolder extends Page {
 	
 	private static $db = array(
 		'PaginationLimit' 	=> 'Int',
-		'NewsSource' 		=> 'enum("Children,All","Children")',
+		'NewsSource' 		=> 'Enum("Children,All","Children")',
 		'NoNewsText' 		=> 'HTMLText'	
 	);
 	
