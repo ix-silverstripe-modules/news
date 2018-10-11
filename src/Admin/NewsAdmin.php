@@ -16,7 +16,7 @@ use Internetrix\News\NewsPage;
 
 class NewsAdmin extends VersionedModelAdmin {
 	
-	private static $menu_icon = 'vendor/internetrix/silverstripe-news/images/icons/news_icon.png';
+	private static $menu_icon = 'internetrix/silverstripe-news:images/icons/news_icon.png';
 	
 	private static $title       = 'News';
 	private static $menu_title  = 'News';
