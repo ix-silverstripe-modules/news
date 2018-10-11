@@ -29,7 +29,7 @@ use SilverStripe\ORM\Queries\SQLSelect;
 use SilverStripe\Subsites\Model\Subsite;
 use SilverStripe\ORM\PaginatedList;
 use Page;
-use Page_Controller;
+use PageController;
 
 class NewsHolder extends Page {
 	
@@ -175,7 +175,7 @@ class NewsHolder extends Page {
 
 }
 
-class NewsHolder_Controller extends Page_Controller {
+class NewsHolder_Controller extends PageController {
 	
 	protected $start;
 	protected $searchQuery;
