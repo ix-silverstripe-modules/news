@@ -160,7 +160,7 @@ class NewsPage extends Page{
 		$imageTag = false;
 
 		if($imageDO && $imageDO->ID && $useListImage){
-			$imageTag = $imageDO->SetRatioSize($width, $height);
+			$imageTag = $imageDO->Fit($width, $height);
 		}
 
 		if( !$imageTag && $this->Content ){
