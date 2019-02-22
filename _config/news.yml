@@ -8,7 +8,7 @@ Internetrix\News:
   enable_rss: true
   pagination_type: ajax
   news_fields_before: 'Content'
-Internetrix\News\NewsHolder:
+Internetrix\News\Model\NewsHolder:
   extensions:
     - 'SilverStripe\Lumberjack\Model\Lumberjack'
 Internetrix\News\NewsPage:
