@@ -188,7 +188,7 @@ class NewsPage extends Page{
 
 }
 
-class NewsPage_Controller extends PageController {
+class NewsPageController extends PageController {
 
 	public function init() {
 		parent::init();
