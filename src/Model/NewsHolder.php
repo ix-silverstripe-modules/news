@@ -175,7 +175,7 @@ class NewsHolder extends Page {
 
 }
 
-class NewsHolder_Controller extends PageController {
+class NewsHolderController extends PageController {
 	
 	protected $start;
 	protected $searchQuery;
