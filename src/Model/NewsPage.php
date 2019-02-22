@@ -33,7 +33,7 @@ class NewsPage extends Page{
 
 	private static $db = [
 		'Date' 				=> 'Datetime',
-		'Author' 			=> 'Text'
+		'NewsAuthor' 			=> 'Varchar(255)'
 	];
 
 	private static $defaults = [
@@ -46,7 +46,7 @@ class NewsPage extends Page{
             'title'     => 'Title',
             'field'     => TextField::class
         ],
-		'Author' => [
+		'NewsAuthor' => [
 		    'filter'    => 'PartialMatchFilter',
             'title'     => 'Author',
             'field'     => TextField::class
@@ -57,7 +57,7 @@ class NewsPage extends Page{
 		"Title",
 		"Status",
 		"Date",
-		"Author",
+		"NewsAuthor" => "Author",
 		"Parent.Title",
 		"ListingImage.CMSThumbnail"
 	];
@@ -124,7 +124,7 @@ class NewsPage extends Page{
 			->setFolderName(Config::inst()->get('Upload', 'uploads_folder') . '/News')
 			, 'ShowListingImageOnPage');
 
-		$fields->addFieldToTab('Root.Main', TextField::create('Author','Author Name'), $putBefore);
+		$fields->addFieldToTab('Root.Main', TextField::create('NewsAuthor','Author Name'), $putBefore);
 
 		$this->extend('updateNewsCMSFields', $fields);
 
