@@ -11,6 +11,8 @@
 
 namespace Internetrix\News;
 
+use Internetrix\News\Model\NewsPage;
+use Internetrix\News\Model\NewsHolder;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HeaderField;
