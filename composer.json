@@ -41,6 +41,9 @@
 			"client"
 		]
 	},
+	"replace": {
+        "silverstripe-modules/news": "self.version"
+	},
 	"autoload": {
 	  "psr-4": {
 		"Internetrix\\News\\": "src/"
