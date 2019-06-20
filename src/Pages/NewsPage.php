@@ -11,6 +11,7 @@
 
 namespace Internetrix\News\Pages;
 
+use Internetrix\News\Controllers\NewsPageController;
 use SilverStripe\Assets\Upload;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Config\Config;
@@ -189,5 +190,13 @@ class NewsPage extends Page
 
         }
         return $imageTag;
+    }
+
+    /**
+     * @return string
+     */
+    public function getControllerName()
+    {
+        return NewsPageController::class;
     }
 }

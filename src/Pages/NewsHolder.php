@@ -7,6 +7,7 @@
 
 namespace Internetrix\News\Pages;
 
+use Internetrix\News\Controllers\NewsHolderController;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
@@ -170,5 +171,13 @@ class NewsHolder extends Page
         $this->extend('updateNewsHolderMenuYears', $set);
 
         return $set;
+    }
+
+    /**
+     * @return string
+     */
+    public function getControllerName()
+    {
+        return NewsHolderController::class;
     }
 }
