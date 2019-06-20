@@ -7,6 +7,7 @@
 
 namespace Internetrix\News\Pages;
 
+use Internetrix\News\Controllers\NewsHolderController;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
@@ -21,7 +22,15 @@ use Page;
 
 class NewsHolder extends Page
 {
-	private static $icon = 'internetrix/silverstripe-news:client/images/icons/newsholder-file.gif';
+	private static $icon            = 'internetrix/silverstripe-news:client/images/icons/newsholder-file.gif';
+
+    private static $table_name      = 'IRX_NewsHolder';
+
+    private static $description     = 'Page that lists all News Pages either from children or sitewide.';
+
+    private static $singular_name   = 'News Holder';
+
+    private static $plural_name     = 'News Holders';
 	
 	private static $db = [
 		'PaginationLimit' 	=> 'Int',
@@ -49,10 +58,13 @@ class NewsHolder extends Page
 		$putBefore = ($fields->fieldByName('Root.Main.ListingSummaryToggle') ? "ListingSummaryToggle" : $configBefore);
 
 		$fields->addFieldToTab('Root.Main', NumericField::create('PaginationLimit', 'Pagination Limit'), $putBefore);
-		$pages = NewsHolder::get();
-		if( $pages && $pages->count() > 1) {
-			$fields->addFieldToTab('Root.Main', DropdownField::create('NewsSource', 'News Source', $this->dbObject('NewsSource')->enumValues()), $putBefore);
-		}
+
+        $pages = NewsHolder::get();
+        if ($pages && $pages->count() > 1) {
+            $newsSource = $this->dbObject('NewsSource')->enumValues();
+            $fields->addFieldToTab('Root.Main', DropdownField::create('NewsSource', 'News Source', $newsSource), 'Content');
+        }
+
 		$fields->addFieldToTab('Root.Main', HtmlEditorField::create('NoNewsText', 'No News Message')->setRows(2)->addExtraClass('withmargin'), $configBefore);
 		
 		$this->extend('updateNewsHolderCMSFields', $fields);
@@ -163,4 +175,12 @@ class NewsHolder extends Page
 	
 		return $set;
 	}
+
+    /**
+     * @return string
+     */
+    public function getControllerName()
+    {
+        return NewsHolderController::class;
+    }
 }

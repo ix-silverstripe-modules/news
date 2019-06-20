@@ -13,23 +13,34 @@ namespace Internetrix\News\Pages;
 
 use SilverStripe\Assets\Upload;
 use SilverStripe\Control\Controller;
-use SilverStripe\Security\Member;
+use SilverStripe\Forms\DateField;
+use SilverStripe\Forms\ListboxField;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\DropdownField;
-use SilverStripe\Forms\DatetimeField;
-use SilverStripe\Forms\TimeField;
 use SilverStripe\Forms\TextField;
 use DOMDocument;
 use SilverStripe\Assets\File;
-use SilverStripe\View\Requirements;
 use Page;
 use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\Security\Security;
 
 class NewsPage extends Page
 {
 	private static $icon 			= 'internetrix/silverstripe-news:client/images/icons/newspage-file.gif';
 
+    private static $table_name      = 'IRX_NewsPage';
+
+    private static $description     = 'Page that displays a single news article.';
+
+    private static $singular_name   = 'News Page';
+
+    private static $plural_name     = 'News Pages';
+
 	private static $default_sort 	= '"Date" DESC, "Created" DESC';
+
+    private static $show_in_sitetree = false;
+
+    private static $allowed_children = [];
 
 	private static $db = [
 		'Date' 				=> 'Datetime',
@@ -62,8 +73,8 @@ class NewsPage extends Page
 	];
 
 	private static $field_labels = [
-		"ListingImage.CMSThumbnail" 	=> 'Image',
-		"Parent.Title"		=> "News Holder"
+		"ListingImage.CMSThumbnail" => 'Image',
+		"Parent.Title"	=> "News Holder"
 	];
 
 	public function populateDefaults()
@@ -71,53 +82,50 @@ class NewsPage extends Page
 		parent::populateDefaults();
 		$this->setField('Date', date('Y-m-d H:i:s', strtotime('now')));
 		if (!Controller::curr()->hasAction("build")){
-			$member = Member::currentUser();
+			$member = Security::getCurrentUser();
 			$member = $member ? $member->getName() : "";
 			$this->setField('Author', $member);
 		}
 	}
 
-	public function onBeforeWrite()
+    public function onBeforeWrite()
     {
-		parent::onBeforeWrite();
+        parent::onBeforeWrite();
 
-		if (!$this->ParentID) {
-			$parent = NewsHolder::get()->First();
-			if ($parent) {
-				$this->setField('ParentID', $parent->ID);
-			} else {
-				$newParent = new NewsHolder();
-				$newParent->Title = 'News';
-				$newParent->URLSegment = 'news';
-				$newParent->write();
-				$newParent->publish('Stage', 'Live');
-
-				$this->setField('ParentID', $newParent->ID);
-			}
-		}
-	}
+        if (!$this->ParentID) {
+            $parent = NewsHolder::get()->first();
+            if (!$parent) {
+                $parent = NewsHolder::create();
+                $parent->Title 		= 'News';
+                $parent->URLSegment = 'news';
+                $parent->write();
+                $parent->copyVersionToStage('Stage', 'Live');
+            }
+            $this->setField('ParentID', $parent->ID);
+        }
+    }
 
 	public function getCMSFields()
     {
 		$fields = parent::getCMSFields();
 
-		// Makes sure the Listing Summary Toggle is present before 
-		$configBefore = Config::inst()->get('News', 'news_fields_before');
-		$configBefore = ($configBefore ? $configBefore : "Content");
+        $pages = NewsHolder::get();
+        if ($pages && $pages->count() > 1) {
+            $fields->addFieldToTab('Root.Main', DropdownField::create('ParentID','Parent NewsHolder', NewsHolder::get()->map()->toArray()), 'Content');
+        }
 
-		$putBefore = ($fields->fieldByName('Root.Main.ListingSummaryToggle') ? "ListingSummaryToggle" : $configBefore);
+        $fields->addFieldsToTab('Root.Main', [
+            DateField::create('Date'),
+            TextField::create('Author','Author Name')
+        ], 'Content');
 
 		// If an image has not been set, open the toggle field to remind user
 		if (class_exists("Internetrix\ListingSummary\Model\ListingPage") && $putBefore == "ListingSummaryToggle") {
-			if($this->ListingImageID == 0){
+			if ($this->ListingImageID == 0) {
 				$toggle = $fields->fieldByName('Root.Main.ListingSummaryToggle');
 				$toggle->setStartClosed(false);
 			}
 		}
-
-		$fields->addFieldToTab('Root.Main', DropdownField::create('ParentID','News Holder?', NewsHolder::get()->map()->toArray()), $putBefore);
-
-		$fields->addFieldToTab("Root.Main", $date = DatetimeField::create("Date", "Date"), $putBefore);
 
 		$fields->addFieldToTab('Root.Main', UploadField::create('ListingImage', 'Listing Image')
 			->addExtraClass('withmargin')
