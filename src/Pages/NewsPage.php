@@ -13,7 +13,6 @@ namespace Internetrix\News\Pages;
 
 use SilverStripe\Assets\Upload;
 use SilverStripe\Control\Controller;
-use SilverStripe\Security\Member;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\DatetimeField;
@@ -22,6 +21,7 @@ use DOMDocument;
 use SilverStripe\Assets\File;
 use Page;
 use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\Security\Security;
 
 class NewsPage extends Page
 {
@@ -29,7 +29,7 @@ class NewsPage extends Page
 
     private static $description = 'Page that displays a single news article.';
 
-    private static $table_name  = 'IRX_News';
+    private static $table_name  = 'IRX_NewsPage';
 
     private static $singular_name = 'News Page';
 
@@ -41,35 +41,35 @@ class NewsPage extends Page
 
     private static $allowed_children = [];
 
-	private static $db = [
-		'Date' 				=> 'Datetime',
-		'NewsAuthor' 			=> 'Varchar(255)'
-	];
+    private static $db = [
+        'Date' 				=> 'Datetime',
+        'NewsAuthor' 		=> 'Varchar(255)'
+    ];
 
-	private static $defaults = [
-		'ShowListingImageOnPage' => true
-	];
+    private static $defaults = [
+        'ShowListingImageOnPage' => true
+    ];
 
-	private static $searchable_fields = [
-		'Title' => [
-		    'filter'    => 'PartialMatchFilter',
+    private static $searchable_fields = [
+        'Title' => [
+            'filter'    => 'PartialMatchFilter',
             'title'     => 'Title',
             'field'     => TextField::class
         ],
-		'NewsAuthor' => [
-		    'filter'    => 'PartialMatchFilter',
+        'NewsAuthor' => [
+            'filter'    => 'PartialMatchFilter',
             'title'     => 'Author',
             'field'     => TextField::class
         ]
-	];
+    ];
 
-	private static $summary_fields = [
-		"Title",
-		"Date",
-		"NewsAuthor" => "Author",
-		"Parent.Title",
-		"ListingImage.CMSThumbnail"
-	];
+    private static $summary_fields = [
+        "Title",
+        "Date",
+        "NewsAuthor" => "Author",
+        "Parent.Title",
+        "ListingImage.CMSThumbnail"
+    ];
 
     private static $field_labels = [
         "ListingImage.CMSThumbnail" 	=> 'Image',
@@ -78,14 +78,14 @@ class NewsPage extends Page
 
     public function populateDefaults()
     {
-		parent::populateDefaults();
-		$this->setField('Date', date('Y-m-d H:i:s', strtotime('now')));
-		if (!Controller::curr()->hasAction("build")){
-			$member = Security::getCurrentUser();
-			$member = $member ? $member->getName() : "";
-			$this->setField('Author', $member);
-		}
-	}
+        parent::populateDefaults();
+        $this->setField('Date', date('Y-m-d H:i:s', strtotime('now')));
+        if (!Controller::curr()->hasAction("build")){
+            $member = Security::getCurrentUser();
+            $member = $member ? $member->getName() : "";
+            $this->setField('Author', $member);
+        }
+    }
 
     public function onBeforeWrite()
     {
@@ -100,7 +100,7 @@ class NewsPage extends Page
                 $newParent->Title = 'News';
                 $newParent->URLSegment = 'news';
                 $newParent->write();
-                $newParent->publish('Stage', 'Live');
+                $newParent->copyVersionToStage('Stage', 'Live');
 
                 $this->setField('ParentID', $newParent->ID);
             }
@@ -115,22 +115,17 @@ class NewsPage extends Page
         $configBefore = Config::inst()->get('News', 'news_fields_before');
         $configBefore = ($configBefore ? $configBefore : "Content");
 
-        $fields->addFieldsToTab('Root.Main', [
-            DateField::create('Date'),
-            TextField::create('Author','Author Name')
-        ], 'Content');
-
         $putBefore = ($fields->fieldByName('Root.Main.ListingSummaryToggle') ? "ListingSummaryToggle" : $configBefore);
 
         // If an image has not been set, open the toggle field to remind user
         if (class_exists("Internetrix\ListingSummary\Model\ListingPage") && $putBefore == "ListingSummaryToggle") {
-            if($this->ListingImageID == 0){
+            if ($this->ListingImageID == 0) {
                 $toggle = $fields->fieldByName('Root.Main.ListingSummaryToggle');
                 $toggle->setStartClosed(false);
             }
         }
 
-        $fields->addFieldToTab('Root.Main', DropdownField::create('ParentID','News Holder?', NewsHolder::get()->map()->toArray()), $putBefore);
+        $fields->addFieldToTab('Root.Main', DropdownField::create('ParentID','News Holder', NewsHolder::get()->map()->toArray()), $putBefore);
 
         $fields->addFieldToTab("Root.Main", $date = DatetimeField::create("Date", "Date"), $putBefore);
 
@@ -139,9 +134,9 @@ class NewsPage extends Page
             ->setFolderName(Config::inst()->get(Upload::class, 'uploads_folder') . '/News')
             , 'ShowListingImageOnPage');
 
-		$fields->addFieldToTab('Root.Main', TextField::create('NewsAuthor','Author Name'), $putBefore);
+        $fields->addFieldToTab('Root.Main', TextField::create('NewsAuthor','Author Name'), $putBefore);
 
-		$this->extend('updateNewsCMSFields', $fields);
+        $this->extend('updateNewsCMSFields', $fields);
 
         return $fields;
     }
@@ -195,5 +190,4 @@ class NewsPage extends Page
         }
         return $imageTag;
     }
-
 }
