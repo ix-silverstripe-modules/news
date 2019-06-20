@@ -13,30 +13,29 @@ namespace Internetrix\News\Pages;
 
 use SilverStripe\Assets\Upload;
 use SilverStripe\Control\Controller;
-use SilverStripe\Forms\DateField;
-use SilverStripe\Forms\ListboxField;
+use SilverStripe\Security\Member;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\DatetimeField;
 use SilverStripe\Forms\TextField;
 use DOMDocument;
 use SilverStripe\Assets\File;
 use Page;
 use SilverStripe\AssetAdmin\Forms\UploadField;
-use SilverStripe\Security\Security;
 
 class NewsPage extends Page
 {
-	private static $icon 			= 'internetrix/silverstripe-news:client/images/icons/newspage-file.gif';
+    private static $icon 			= 'internetrix/silverstripe-news:client/images/icons/newspage-file.gif';
 
-    private static $table_name      = 'IRX_NewsPage';
+    private static $description = 'Page that displays a single news article.';
 
-    private static $description     = 'Page that displays a single news article.';
+    private static $table_name  = 'IRX_News';
 
-    private static $singular_name   = 'News Page';
+    private static $singular_name = 'News Page';
 
-    private static $plural_name     = 'News Pages';
+    private static $plural_name = 'News Pages';
 
-	private static $default_sort 	= '"Date" DESC, "Created" DESC';
+    private static $default_sort 	= '"Date" DESC, "Created" DESC';
 
     private static $show_in_sitetree = false;
 
@@ -72,12 +71,12 @@ class NewsPage extends Page
 		"ListingImage.CMSThumbnail"
 	];
 
-	private static $field_labels = [
-		"ListingImage.CMSThumbnail" => 'Image',
-		"Parent.Title"	=> "News Holder"
-	];
+    private static $field_labels = [
+        "ListingImage.CMSThumbnail" 	=> 'Image',
+        "Parent.Title"		=> "News Holder"
+    ];
 
-	public function populateDefaults()
+    public function populateDefaults()
     {
 		parent::populateDefaults();
 		$this->setField('Date', date('Y-m-d H:i:s', strtotime('now')));
@@ -93,100 +92,108 @@ class NewsPage extends Page
         parent::onBeforeWrite();
 
         if (!$this->ParentID) {
-            $parent = NewsHolder::get()->first();
-            if (!$parent) {
-                $parent = NewsHolder::create();
-                $parent->Title 		= 'News';
-                $parent->URLSegment = 'news';
-                $parent->write();
-                $parent->copyVersionToStage('Stage', 'Live');
+            $parent = NewsHolder::get()->First();
+            if ($parent) {
+                $this->setField('ParentID', $parent->ID);
+            } else {
+                $newParent = new NewsHolder();
+                $newParent->Title = 'News';
+                $newParent->URLSegment = 'news';
+                $newParent->write();
+                $newParent->publish('Stage', 'Live');
+
+                $this->setField('ParentID', $newParent->ID);
             }
-            $this->setField('ParentID', $parent->ID);
         }
     }
 
-	public function getCMSFields()
+    public function getCMSFields()
     {
-		$fields = parent::getCMSFields();
+        $fields = parent::getCMSFields();
 
-        $pages = NewsHolder::get();
-        if ($pages && $pages->count() > 1) {
-            $fields->addFieldToTab('Root.Main', DropdownField::create('ParentID','Parent NewsHolder', NewsHolder::get()->map()->toArray()), 'Content');
-        }
+        // Makes sure the Listing Summary Toggle is present before
+        $configBefore = Config::inst()->get('News', 'news_fields_before');
+        $configBefore = ($configBefore ? $configBefore : "Content");
 
         $fields->addFieldsToTab('Root.Main', [
             DateField::create('Date'),
             TextField::create('Author','Author Name')
         ], 'Content');
 
-		// If an image has not been set, open the toggle field to remind user
-		if (class_exists("Internetrix\ListingSummary\Model\ListingPage") && $putBefore == "ListingSummaryToggle") {
-			if ($this->ListingImageID == 0) {
-				$toggle = $fields->fieldByName('Root.Main.ListingSummaryToggle');
-				$toggle->setStartClosed(false);
-			}
-		}
+        $putBefore = ($fields->fieldByName('Root.Main.ListingSummaryToggle') ? "ListingSummaryToggle" : $configBefore);
 
-		$fields->addFieldToTab('Root.Main', UploadField::create('ListingImage', 'Listing Image')
-			->addExtraClass('withmargin')
-			->setFolderName(Config::inst()->get(Upload::class, 'uploads_folder') . '/News')
-			, 'ShowListingImageOnPage');
+        // If an image has not been set, open the toggle field to remind user
+        if (class_exists("Internetrix\ListingSummary\Model\ListingPage") && $putBefore == "ListingSummaryToggle") {
+            if($this->ListingImageID == 0){
+                $toggle = $fields->fieldByName('Root.Main.ListingSummaryToggle');
+                $toggle->setStartClosed(false);
+            }
+        }
+
+        $fields->addFieldToTab('Root.Main', DropdownField::create('ParentID','News Holder?', NewsHolder::get()->map()->toArray()), $putBefore);
+
+        $fields->addFieldToTab("Root.Main", $date = DatetimeField::create("Date", "Date"), $putBefore);
+
+        $fields->addFieldToTab('Root.Main', UploadField::create('ListingImage', 'Listing Image')
+            ->addExtraClass('withmargin')
+            ->setFolderName(Config::inst()->get(Upload::class, 'uploads_folder') . '/News')
+            , 'ShowListingImageOnPage');
 
 		$fields->addFieldToTab('Root.Main', TextField::create('NewsAuthor','Author Name'), $putBefore);
 
 		$this->extend('updateNewsCMSFields', $fields);
 
-		return $fields;
-	}
+        return $fields;
+    }
 
-	public function getDateMonth()
+    public function getDateMonth()
     {
-		return date('F Y', strtotime($this->Date));
-	}
+        return date('F Y', strtotime($this->Date));
+    }
 
-	public function NewsHolderTitle()
+    public function NewsHolderTitle()
     {
-		return $this->Parent()->MenuTitle;
-	}
+        return $this->Parent()->MenuTitle;
+    }
 
-	public function NewsHolderLink()
+    public function NewsHolderLink()
     {
-		return $this->Parent()->Link();
-	}
+        return $this->Parent()->Link();
+    }
 
-	public function LoadOneImage($width = 700, $height = 420)
+    public function LoadOneImage($width = 700, $height = 420)
     {
-		$imageDO = $this->ListingImage();
-		$useListImage = $this->ShowListingImageOnPage;
-		$imageTag = false;
+        $imageDO = $this->ListingImage();
+        $useListImage = $this->ShowListingImageOnPage;
+        $imageTag = false;
 
-		if ($imageDO && $imageDO->ID && $useListImage) {
-			$imageTag = $imageDO->Fit($width, $height);
-		}
+        if ($imageDO && $imageDO->ID && $useListImage) {
+            $imageTag = $imageDO->Fit($width, $height);
+        }
 
-		if (!$imageTag && $this->Content) {
-			$dom = new DOMDocument();
-			@$dom->loadHTML($this->Content);
+        if (!$imageTag && $this->Content) {
+            $dom = new DOMDocument();
+            @$dom->loadHTML($this->Content);
 
-			$imgs = $dom->getElementsByTagName("img");
+            $imgs = $dom->getElementsByTagName("img");
 
-			foreach ($imgs as $img) {
-				//get image src
-				$src = $img->getAttribute('src');
+            foreach ($imgs as $img) {
+                //get image src
+                $src = $img->getAttribute('src');
 
-				if ($src) {
-					if (stripos($src, 'assets/') === 0 && ! file_exists(BASE_PATH . '/' . $src)) {
-						continue;
-					}
+                if ($src) {
+                    if (stripos($src, 'assets/') === 0 && ! file_exists(BASE_PATH . '/' . $src)) {
+                        continue;
+                    }
 
-					$imgTag = File::find($src);
-					if ($imgTag)
-						break;
-				}
-			}
+                    $imgTag = File::find($src);
+                    if ($imgTag)
+                        break;
+                }
+            }
 
-		}
-		return $imageTag;
-	}
+        }
+        return $imageTag;
+    }
 
 }

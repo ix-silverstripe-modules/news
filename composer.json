@@ -34,8 +34,7 @@
 		"silverstripe/cms" : "^4.0.0",
 		"internetrix/silverstripe-versionedmodeladmin" : "*",
 		"internetrix/silverstripe-listingsummary" : "dev-master",
-		"silverstripe/lumberjack" : "^2.0.0",
-		"tractorcow/silverstripe-colorpicker": "^4.0.0"
+		"silverstripe/lumberjack" : "^2.0.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^5.7",
