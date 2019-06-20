@@ -8,10 +8,10 @@ Internetrix\News:
   enable_rss: true
   pagination_type: ajax
   news_fields_before: 'Content'
-Internetrix\News\Model\NewsHolder:
+Internetrix\News\Pages\NewsHolder:
   extensions:
     - 'SilverStripe\Lumberjack\Model\Lumberjack'
-Internetrix\News\NewsPage:
+Internetrix\News\Pages\NewsPage:
   show_in_sitetree: false
 #Page:
 #  hide_sidebar: true

@@ -9,10 +9,10 @@
  *
  **/
 
-namespace Internetrix\News;
+namespace Internetrix\News\Extensions;
 
-use Internetrix\News\Model\NewsPage;
-use Internetrix\News\Model\NewsHolder;
+use Internetrix\News\Pages\NewsHolder;
+use Internetrix\News\Pages\NewsPage;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HeaderField;
@@ -20,8 +20,8 @@ use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Core\Config\Config;
 
-class NewsPageExtension extends DataExtension {
-
+class NewsPageExtension extends DataExtension
+{
 	private static $db = [
 		'ShowLatestNews' 	=> 'Boolean',
 		'LatestNewsCount' 	=> 'Int'
@@ -32,9 +32,10 @@ class NewsPageExtension extends DataExtension {
 		'LatestNewsCount' 	=> 4
 	];
 
-	public function IRXupdateCMSFields(FieldList &$fields) {
+	public function IRXupdateCMSFields(FieldList &$fields)
+    {
 		$hide_sidebar = Config::inst()->get('Page', 'hide_sidebar');
-		if( !$hide_sidebar || (!is_bool($hide_sidebar) && !in_array(get_class($this->owner), $hide_sidebar))){
+		if (!$hide_sidebar || (!is_bool($hide_sidebar) && !in_array(get_class($this->owner), $hide_sidebar))) {
 				$tab = 'Root.SideBar';
 				$insertBefore = '';
 				$fields->addFieldToTab($tab, HeaderField::create('NewsOptions', 'News Options'), $insertBefore);
@@ -45,28 +46,31 @@ class NewsPageExtension extends DataExtension {
 		return $fields;
 	}
 
-	public function LatestNews(){
+	public function LatestNews()
+    {
 		$limit = $this->owner->LatestNewsCount < 0 || $this->owner->LatestNewsCount > 99 ? $this->owner->LatestNewsCount : 4;
 		return NewsPage::get()->sort('Date', 'DESC')->limit($limit);
 	}
 
-	public function ViewAllNewsLink(){
+	public function ViewAllNewsLink()
+    {
 		$result = false;
 		$newsPage = NewsHolder::get();
-		if( $newsPage->Count() == 1 )
+		if ($newsPage->Count() == 1)
 			$result = $newsPage->first()->Link();
-		elseif( $newsPage->Count() > 1 ){
+		elseif ($newsPage->Count() > 1 ) {
 			$list = $newsPage->filter('NewsSource','All');
-			if( $list->Count() >= 1 )
+			if ($list->Count() >= 1)
 				$result = $list->first()->Link();
 		}
 		return $result;
 	}
 
-	public function onBeforeWrite(){
+	public function onBeforeWrite()
+    {
 		parent::onBeforeWrite();
 
-		if( $this->owner->LatestNewsCount < 0 || $this->owner->LatestNewsCount > 99 ){
+		if ($this->owner->LatestNewsCount < 0 || $this->owner->LatestNewsCount > 99) {
 			$this->owner->LatestNewsCount = 4;
 		}
 	}

@@ -1,0 +1,10 @@
+---
+Name: newslegacyclasses
+---
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    NewsHolder: Internetrix\News\Pages\NewsHolder
+    NewsPage: Internetrix\News\Pages\NewsPage
+    # Remap old class names
+    Internetrix\News\Model\NewsHolder: Internetrix\News\Pages\NewsHolder
+    Internetrix\News\Model\NewsPage: Internetrix\News\Pages\NewsPage

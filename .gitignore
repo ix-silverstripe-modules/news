@@ -1,0 +1,19 @@
+##### ignore everything...
+/*
+
+##### ...but
+!/.gitignore
+!/_config.php
+!/composer.json
+!/README.md
+!/.editorconfig
+!/changelog.md
+!/code-of-conduct.md
+!/LICENSE.md
+!/phpcs.xml.dist
+
+##### folders
+!/_config/
+!/client/
+!/src/
+!/templates/
