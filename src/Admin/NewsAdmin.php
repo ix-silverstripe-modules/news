@@ -9,13 +9,13 @@
  *
  **/
 
-namespace Internetrix\News;
+namespace Internetrix\News\Admin;
 
 use Internetrix\VersionedModelAdmin\VersionedModelAdmin;
-use Internetrix\News\Model\NewsPage;
+use Internetrix\News\Pages\NewsPage;
 
-class NewsAdmin extends VersionedModelAdmin {
-	
+class NewsAdmin extends VersionedModelAdmin
+{
 	private static $menu_icon = 'internetrix/silverstripe-news:client/images/icons/news_icon.png';
 	
 	private static $title       = 'News';
@@ -27,6 +27,4 @@ class NewsAdmin extends VersionedModelAdmin {
     ];
 
 	private static $model_importers = [];
-	
 }
-
