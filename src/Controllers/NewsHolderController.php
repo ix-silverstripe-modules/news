@@ -212,9 +212,7 @@ class NewsHolderController extends PageController
     public function DateField()
     {
         $dateField = DateField::create('date', 'Date');
-        $dateField->setConfig('showcalendar', true);
-        $dateField->setConfig('dateformat', 'dd/MM/YYYY');
-        $dateField->setConfig('jQueryUI.changeMonth', true);
+        $dateField->setDateFormat('dd/MM/yyyy');
 
         if ($this->date) {
             $dateField->setValue($this->date);
