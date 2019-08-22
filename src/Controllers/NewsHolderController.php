@@ -10,7 +10,6 @@ use SilverStripe\Control\RSS\RSSFeed;
 use SilverStripe\Core\Convert;
 use SilverStripe\Control\Director;
 use SilverStripe\ORM\GroupedList;
-use SilverStripe\Versioned\Versioned;
 use SilverStripe\Control\HTTP;
 use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\TextField;
@@ -162,11 +161,10 @@ class NewsHolderController extends PageController
         }
 
         if ($this->searchQuery) {
-            $newsTable = 'SiteTree';
-            if (Versioned::current_stage() == 'Live') {
-                $newsTable .= '_Live';
-            }
-            $news = $news->where("\"$newsTable\".\"Title\" LIKE '%" . $this->searchQuery . "%' OR \"$newsTable\".\"Content\" LIKE '%" . $this->searchQuery . "%'");
+            $news = $news->filterAny([
+                'Title:PartialMatch' => $this->searchQuery,
+                'Content:PartialMatch' => $this->searchQuery,
+            ]);
         }
 
         $this->extend('updateNews', $news);
