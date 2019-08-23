@@ -211,11 +211,12 @@ class NewsHolderController extends PageController
     {
         $dateField = DateField::create('date', 'Date');
         $dateField->setDateFormat('dd/MM/yyyy');
+        $dateField->setHTML5(false);
 
         if ($this->date) {
-            $dateField->setValue($this->date);
+            $dateField->setValue(str_replace('/', '-', $this->date));
         } else {
-            $dateField->setValue(date('d/m/Y'));
+            $dateField->setValue(date('d-m-Y'));
         }
 
         $this->extend('updateDateField', $dateField);
