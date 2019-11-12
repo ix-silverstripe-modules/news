@@ -17,7 +17,7 @@ class NewsPageController extends PageController
 
     public function ShareLinksEnabled()
     {
-        return Config::inst()->get('News', 'enable_sharing');
+        return Config::inst()->get('Internetrix\News', 'enable_sharing');
     }
 
     public function BackLink()
